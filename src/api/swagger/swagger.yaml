@@ -13,22 +13,37 @@ consumes:
 produces:
   - application/json
 paths:
+  /customer/addCustomer:
+      x-swagger-router-controller: vetsis
+      post:
+        description: Store new customers
+        operationId: newCustomer
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new customers post
+            required: true
+            schema:
+              $ref: '#/definitions/NewCustomers'
+        responses:
+          "400":
+            description: >-
   /customer/deleteCustomer:
-    x-swagger-router-controller: vetsis
-    delete:
-      description: Delete a customers
-      operationId: deleteCustomer
-      parameters:
-        - in: header
-          name: customer_id
-          description: Customer id to delete
-          type: string
-          required: true
-      responses:
-        "200":
-          description: Delete customer
-        "400":
-          description: Value is required but was not provided
+      x-swagger-router-controller: vetsis
+      delete:
+        description: Delete a customers
+        operationId: deleteCustomer
+        parameters:
+          - in: header
+            name: customer_id
+            description: Customer id to delete
+            type: string
+            required: true
+        responses:
+          "200":
+            description: Delete customer
+          "400":
+            description: Value is required but was not provided
   /customer/modifyCustomer:
     x-swagger-router-controller: vetsis
     put:
@@ -44,64 +59,198 @@ paths:
       responses:
         "400":
           description: >-
-  /customer/addCustomer:
+  /customer/customers:
+      x-swagger-router-controller: vetsis
+      get:
+        description: Return the list of available customers
+        operationId: customerList
+        responses:
+          "200":
+            description: Application list
+            schema:
+              $ref: "#/definitions/GetCustomers"
+          "400":
+            description: Value is required but was not provided
+  /pet/addPet:
+     x-swagger-router-controller: vetsis
+     post:
+        description: Store new pets
+        operationId: newPet
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new pet post
+            required: true
+            schema:
+              $ref: '#/definitions/NewPets'
+        responses:
+          "400":
+            description: >-
+  /pet/deletePet:
+     x-swagger-router-controller: vetsis
+     delete:
+       description: Delete a pet
+       operationId: deletePet
+       parameters:
+         - in: header
+           name: pet_id
+           description: Pet id to delete
+           type: string
+           required: true
+       responses:
+         "200":
+           description: Delete pet
+         "400":
+           description: Value is required but was not provide
+  /pet/modifyPet:
     x-swagger-router-controller: vetsis
-    post:
-      description: Store new customers
-      operationId: newCustomer
+    put:
+      description: Modify a pet
+      operationId: modifyPet
       parameters:
         - name: content
           in: body
-          description: Body schema for new customers post
+          description: Body schema for modify a customers post
           required: true
           schema:
-            $ref: '#/definitions/NewCustomers'
+            $ref: '#/definitions/NewPets'
       responses:
         "400":
           description: >-
-  /customer/customers:
+  /pet/pets:
     x-swagger-router-controller: vetsis
     get:
-      description: Return the list of available customers
-      operationId: customerList
+      description: Return the list of available pets
+      operationId: petList
       responses:
         "200":
           description: Application list
           schema:
-            $ref: "#/definitions/GetCustomers"
+            $ref: "#/definitions/GetPets"
+        "400":
+          description: Value is required but was not provided
+  /provider/addProvider:
+     x-swagger-router-controller: vetsis
+     post:
+        description: Store new providers
+        operationId: newProvider
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new provider post
+            required: true
+            schema:
+              $ref: '#/definitions/NewProviders'
+        responses:
+          "400":
+            description: >-
+  /provider/deleteProvider:
+     x-swagger-router-controller: vetsis
+     delete:
+       description: Delete a provider
+       operationId: deleteProvider
+       parameters:
+         - in: header
+           name: provider_id
+           description: provider id to delete
+           type: string
+           required: true
+       responses:
+         "200":
+           description: Delete provider
+         "400":
+           description: Value is required but was not provide
+  /provider/modifyProvider:
+    x-swagger-router-controller: vetsis
+    put:
+      description: Modify a provider
+      operationId: modifyProvider
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for modify a provider post
+          required: true
+          schema:
+            $ref: '#/definitions/NewProviders'
+      responses:
+        "400":
+          description: >-
+  /provider/providers:
+    x-swagger-router-controller: vetsis
+    get:
+      description: Return the list of available providers
+      operationId: providerList
+      responses:
+        "200":
+          description: Provider list
+          schema:
+            $ref: "#/definitions/GetProviders"
         "400":
           description: Value is required but was not provided
   /swagger:
     x-swagger-pipe: swagger_raw
 definitions:
+  GetPets:
+    description: GetPets response
+    type: string
   GetCustomers:
     description: GetCustomers response
     type: string
+  NewProviders:
+    description: Body schema for new provider post
+    properties:
+      id:
+        $ref: '#/definitions/providerIdBodyParam'
+      name:
+        $ref: '#/definitions/providerNameBodyParam'
+      address:
+        $ref: '#/definitions/providerAddressBodyParam'
+      cellPhone:
+        $ref: '#/definitions/providerCellPhoneBodyParam'
+      orderDate:
+        $ref: '#/definitions/providerOrderDateBodyParam'
+      deliveryDate:
+        $ref: '#/definitions/providerDeliveryDateBodyParam'
+  NewPets:
+    description: Body schema for new pet post
+    properties:
+      id:
+        $ref: '#/definitions/petIdBodyParam'
+      name:
+        $ref: '#/definitions/petNameBodyParam'
+      race:
+        $ref: '#/definitions/petRaceBodyParam'
+      gender:
+        $ref: '#/definitions/petGenderBodyParam'
+      castrated:
+        $ref: '#/definitions/petCastratedBodyParam'
+      birthdayDate:
+        $ref: '#/definitions/petBirthdayDateBodyParam'
   NewCustomers:
     description: Body schema for new customer post
     properties:
       id:
-        $ref: '#/definitions/idBodyParam'
+        $ref: '#/definitions/customerIdBodyParam'
       name:
-        $ref: '#/definitions/nameBodyParam'
+        $ref: '#/definitions/customerNameBodyParam'
       lastname:
-        $ref: '#/definitions/lastnameBodyParam'
+        $ref: '#/definitions/customerLastnameBodyParam'
       docType:
-        $ref: '#/definitions/docTypeBodyParam'
+        $ref: '#/definitions/customerDocTypeBodyParam'
       docNum:
-        $ref: '#/definitions/docNumBodyParam'
+        $ref: '#/definitions/customerDocNumBodyParam'
       phone:
-        $ref: '#/definitions/phoneBodyParam'
+        $ref: '#/definitions/customerPhoneBodyParam'
       cellPhone:
-        $ref: '#/definitions/cellPhoneBodyParam'
+        $ref: '#/definitions/customerCellPhoneBodyParam'
       street:
-        $ref: '#/definitions/streetBodyParam'
+        $ref: '#/definitions/customerStreetBodyParam'
       floor:
-        $ref: '#/definitions/floorBodyParam'
+        $ref: '#/definitions/customerFloorBodyParam'
       flat:
-        $ref: '#/definitions/flatBodyParam'
+        $ref: '#/definitions/customerFlatBodyParam'
       location:
-        $ref: '#/definitions/locationBodyParam'
+        $ref: '#/definitions/customerLocationBodyParam'
     required:
       - name
       - lastname
@@ -110,58 +259,110 @@ definitions:
       - cellPhone
       - street
       - location
-  idBodyParam:
+  customerIdBodyParam:
     description: Customer id
     type: integer
     minLength: 1
     example: 1
-  nameBodyParam:
+  customerNameBodyParam:
     description: Customers name
     type: string
     minLength: 1
     example: Nicolas
-  lastnameBodyParam:
+  customerLastnameBodyParam:
     description: Customers lastname
     type: string
     minLength: 1
     example: Ferretti
-  docTypeBodyParam:
+  customerDocTypeBodyParam:
     description: Customers Document Type
     type: string
     minLength: 1
     example: DNI
-  docNumBodyParam:
+  customerDocNumBodyParam:
     description: Customers Document Number
     type: integer
     minLength: 1
     example: 34574565
-  phoneBodyParam:
+  customerPhoneBodyParam:
     description: Customers Phone
     type: string
     minLength: 1
     example: "-"
-  cellPhoneBodyParam:
+  customerCellPhoneBodyParam:
     description: Customers Cell Phone
     type: string
     minLength: 1
     example: "3516536411"
-  streetBodyParam:
+  customerStreetBodyParam:
     description: Customers Street
     type: string
     minLength: 1
     example: La Habana 1935
-  floorBodyParam:
+  customerFloorBodyParam:
     description: Customers Floor
     type: string
     minLength: 1
     example: 1
-  flatBodyParam:
+  customerFlatBodyParam:
     description: Customers Flat
     type: string
     minLength: 1
     example: A
-  locationBodyParam:
+  customerLocationBodyParam:
     description: Customers Location
     type: string
     minLength: 1
     example: Cordoba
+  petIdBodyParam:
+    description: Pet id
+    type: string
+    minLength: 1
+    example: 1
+  petNameBodyParam:
+    description: Pet name
+    type: string
+    minLength: 1
+    example: Laika
+  petRaceBodyParam:
+    description: Customers Location
+    type: integer
+    minLength: 1
+    example: 0
+  petGenderBodyParam:
+    description: Customers Location
+    type: integer
+    minLength: 1
+    example: 0
+  petCastratedBodyParam:
+    type: boolean
+    minLength: 1
+    example: false
+  petBirthdayDateBodyParam:
+    type: string
+    minLength: 1
+    example: "17/09/1989"
+  providerIdBodyParam:
+    type: integer
+    minLength: 1
+    example: 1
+  providerNameBodyParam:
+    type: string
+    minLength: 1
+    example: "Purina"
+  providerAddressBodyParam:
+    type: string
+    minLength: 1
+    example: "Catamarca 1880"
+  providerCellPhoneBodyParam:
+    type: string
+    minLength: 1
+    example: "3516536411"
+  providerOrderDateBodyParam:
+    type: string
+    minLength: 1
+    example: "20/03/2018"
+  providerDeliveryDateBodyParam:
+    type: string
+    minLength: 1
+    example: "23/03/2018"
