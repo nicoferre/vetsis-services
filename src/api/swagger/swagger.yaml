@@ -1,0 +1,167 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: Vetsis services
+host: 'localhost:8088'
+basePath: /vetsis/v1
+schemes:
+  - http
+consumes:
+  - application/json
+  - multipart/form-data
+  - application/x-www-form-urlencoded
+produces:
+  - application/json
+paths:
+  /customer/deleteCustomer:
+    x-swagger-router-controller: vetsis
+    delete:
+      description: Delete a customers
+      operationId: deleteCustomer
+      parameters:
+        - in: header
+          name: customer_id
+          description: Customer id to delete
+          type: string
+          required: true
+      responses:
+        "200":
+          description: Delete customer
+        "400":
+          description: Value is required but was not provided
+  /customer/modifyCustomer:
+    x-swagger-router-controller: vetsis
+    put:
+      description: Modify a customers
+      operationId: modifyCustomer
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for modify a customers post
+          required: true
+          schema:
+            $ref: '#/definitions/NewCustomers'
+      responses:
+        "400":
+          description: >-
+  /customer/addCustomer:
+    x-swagger-router-controller: vetsis
+    post:
+      description: Store new customers
+      operationId: newCustomer
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for new customers post
+          required: true
+          schema:
+            $ref: '#/definitions/NewCustomers'
+      responses:
+        "400":
+          description: >-
+  /customer/customers:
+    x-swagger-router-controller: vetsis
+    get:
+      description: Return the list of available customers
+      operationId: customerList
+      responses:
+        "200":
+          description: Application list
+          schema:
+            $ref: "#/definitions/GetCustomers"
+        "400":
+          description: Value is required but was not provided
+  /swagger:
+    x-swagger-pipe: swagger_raw
+definitions:
+  GetCustomers:
+    description: GetCustomers response
+    type: string
+  NewCustomers:
+    description: Body schema for new customer post
+    properties:
+      id:
+        $ref: '#/definitions/idBodyParam'
+      name:
+        $ref: '#/definitions/nameBodyParam'
+      lastname:
+        $ref: '#/definitions/lastnameBodyParam'
+      docType:
+        $ref: '#/definitions/docTypeBodyParam'
+      docNum:
+        $ref: '#/definitions/docNumBodyParam'
+      phone:
+        $ref: '#/definitions/phoneBodyParam'
+      cellPhone:
+        $ref: '#/definitions/cellPhoneBodyParam'
+      street:
+        $ref: '#/definitions/streetBodyParam'
+      floor:
+        $ref: '#/definitions/floorBodyParam'
+      flat:
+        $ref: '#/definitions/flatBodyParam'
+      location:
+        $ref: '#/definitions/locationBodyParam'
+    required:
+      - name
+      - lastname
+      - docType
+      - docNum
+      - cellPhone
+      - street
+      - location
+  idBodyParam:
+    description: Customer id
+    type: integer
+    minLength: 1
+    example: 1
+  nameBodyParam:
+    description: Customers name
+    type: string
+    minLength: 1
+    example: Nicolas
+  lastnameBodyParam:
+    description: Customers lastname
+    type: string
+    minLength: 1
+    example: Ferretti
+  docTypeBodyParam:
+    description: Customers Document Type
+    type: string
+    minLength: 1
+    example: DNI
+  docNumBodyParam:
+    description: Customers Document Number
+    type: integer
+    minLength: 1
+    example: 34574565
+  phoneBodyParam:
+    description: Customers Phone
+    type: string
+    minLength: 1
+    example: "-"
+  cellPhoneBodyParam:
+    description: Customers Cell Phone
+    type: string
+    minLength: 1
+    example: "3516536411"
+  streetBodyParam:
+    description: Customers Street
+    type: string
+    minLength: 1
+    example: La Habana 1935
+  floorBodyParam:
+    description: Customers Floor
+    type: string
+    minLength: 1
+    example: 1
+  flatBodyParam:
+    description: Customers Flat
+    type: string
+    minLength: 1
+    example: A
+  locationBodyParam:
+    description: Customers Location
+    type: string
+    minLength: 1
+    example: Cordoba
