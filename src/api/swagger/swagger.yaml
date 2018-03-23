@@ -595,9 +595,187 @@ paths:
               $ref: "#/definitions/GetUsers"
           "400":
             description: Value is required but was not provided
+  /security/addRole:
+      x-swagger-router-controller: vetsis
+      post:
+        description: Store new role
+        operationId: newRole
+        tags:
+          - Security
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new role post
+            required: true
+            schema:
+              $ref: '#/definitions/NewRole'
+        responses:
+          "400":
+            description: >-
+  /security/deleteRole/{role_id}:
+      x-swagger-router-controller: vetsis
+      delete:
+        description: Delete a role
+        operationId: deleteRole
+        tags:
+          - Security
+        parameters:
+          - in: path
+            name: role_id
+            description: Role id to delete
+            type: string
+            required: true
+        responses:
+          "200":
+            description: Delete role
+          "400":
+            description: Value is required but was not provided
+  /security/modifyRole/:
+    x-swagger-router-controller: vetsis
+    put:
+      description: Modify a role
+      operationId: modifyRole
+      tags:
+        - Security
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for modify a role post
+          required: true
+          schema:
+            $ref: '#/definitions/NewRole'
+      responses:
+        "400":
+          description: >-
+  /security/roles:
+      x-swagger-router-controller: vetsis
+      get:
+        description: Return the list of available roles
+        operationId: showRole
+        tags:
+          - Security
+        responses:
+          "200":
+            description: Application list
+            schema:
+              $ref: "#/definitions/GetRoles"
+          "400":
+            description: Value is required but was not provided
+  /security/roles/{role_id}:
+      x-swagger-router-controller: vetsis
+      get:
+        description: Return the list of available roles
+        operationId: showRoleById
+        tags:
+          - Security
+        parameters:
+          - in: path
+            name: role_id
+            description: Role id to show
+            type: string
+            required: true
+        responses:
+          "200":
+            description: Application list
+            schema:
+              $ref: "#/definitions/GetRoles"
+          "400":
+            description: Value is required but was not provided
+  /turn/addTurn:
+      x-swagger-router-controller: vetsis
+      post:
+        description: Store new turn
+        operationId: newTurn
+        tags:
+          - Turn
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new turn post
+            required: true
+            schema:
+              $ref: '#/definitions/NewTurn'
+        responses:
+          "400":
+            description: >-
+  /turn/deleteTurn/{turn_id}:
+      x-swagger-router-controller: vetsis
+      delete:
+        description: Delete a turn
+        operationId: deleteTurn
+        tags:
+          - Turn
+        parameters:
+          - in: path
+            name: turn_id
+            description: Turn id to delete
+            type: string
+            required: true
+        responses:
+          "200":
+            description: Delete turn
+          "400":
+            description: Value is required but was not provided
+  /turn/modifyTurn/:
+    x-swagger-router-controller: vetsis
+    put:
+      description: Modify a turn
+      operationId: modifyTurn
+      tags:
+        - Turn
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for modify a turn post
+          required: true
+          schema:
+            $ref: '#/definitions/NewTurn'
+      responses:
+        "400":
+          description: >-
+  /turn/turns/:
+      x-swagger-router-controller: vetsis
+      get:
+        description: Return the list of available turns
+        operationId: showTurns
+        tags:
+          - Turn
+        responses:
+          "200":
+            description: Application list
+            schema:
+              $ref: "#/definitions/GetTurns"
+          "400":
+            description: Value is required but was not provided
+  /turn/turns/{turn_id}:
+      x-swagger-router-controller: vetsis
+      get:
+        description: Return the list of available turns
+        operationId: showTurnsById
+        tags:
+          - Turn
+        parameters:
+          - in: path
+            name: turn_id
+            description: Turn id to show
+            type: string
+            required: true
+        responses:
+          "200":
+            description: Application list
+            schema:
+              $ref: "#/definitions/GetTurns"
+          "400":
+            description: Value is required but was not provided
   /swagger:
     x-swagger-pipe: swagger_raw
 definitions:
+  GetTurns:
+    description: GetTurns response
+    type: string
+  GetRoles:
+    description: GetRoles response
+    type: string
   GetUsers:
     description: GetUsers response
     type: string
@@ -613,6 +791,36 @@ definitions:
   GetCustomers:
     description: GetCustomers response
     type: string
+  NewTurn:
+    description: Body schema for new role post
+    properties:
+     id:
+       $ref: '#/definitions/vaccinationsIdBodyParam'
+     idCustomer:
+       $ref: '#/definitions/customerIdBodyParam'
+     idPet:
+       $ref: '#/definitions/petIdBodyParam'
+     date:
+       $ref: '#/definitions/clinicHistoryDateBodyParam'
+    required:
+     - idCustomer
+     - idPet
+     - date
+  NewRole:
+    description: Body schema for new role post
+    properties:
+      id:
+        $ref: '#/definitions/vaccinationsIdBodyParam'
+      name:
+          $ref: '#/definitions/vaccinationsNameBodyParam'
+      startDate:
+          $ref: '#/definitions/clinicHistoryDateBodyParam'
+      endDate:
+          $ref: '#/definitions/clinicHistoryDateBodyParam'
+    required:
+      - name
+      - startDate
+      - endDate
   NewVaccinations:
     description: Body schema for new vaccinations post
     properties:
