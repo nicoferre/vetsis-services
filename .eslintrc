@@ -1,0 +1,21 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": 2,
+    "jsx-a11y/href-no-hash": "off"
+  },
+  "extends": "airbnb",
+  "globals": {
+    "_": true,
+    "describe": true,
+    "it": true,
+    "before": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "expect": true,
+    "sinon": true
+  }
+}

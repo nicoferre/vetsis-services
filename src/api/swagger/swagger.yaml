@@ -14,7 +14,7 @@ produces:
   - application/json
 paths:
   /customer/addCustomer:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: customer
       post:
         description: Store new customers
         operationId: newCustomer
@@ -30,26 +30,26 @@ paths:
         responses:
           "400":
             description: >-
-  /customer/deleteCustomer/{customer_id}:
-      x-swagger-router-controller: vetsis
+  /customer/deleteCustomer/:
+      x-swagger-router-controller: customer
       delete:
         description: Delete a customers
         operationId: deleteCustomer
         tags:
           - Customer
         parameters:
-          - in: path
+          - in: header
             name: customer_id
-            description: Customer id to delete
+            description: Group name to delete
             type: string
             required: true
         responses:
-          "200":
+          "204":
             description: Delete customer
           "400":
             description: Value is required but was not provided
   /customer/modifyCustomer/:
-    x-swagger-router-controller: vetsis
+    x-swagger-router-controller: customer
     put:
       description: Modify a customers
       operationId: modifyCustomer
@@ -66,32 +66,17 @@ paths:
         "400":
           description: >-
   /customer/customers:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: customer
       get:
         description: Return the list of available customers
-        operationId: customerList
-        tags:
-          - Customer
-        responses:
-          "200":
-            description: Application list
-            schema:
-              $ref: "#/definitions/GetCustomers"
-          "400":
-            description: Value is required but was not provided
-  /customer/customers/{customer_id}:
-      x-swagger-router-controller: vetsis
-      get:
-        description: Return the list of available customers
-        operationId: showCustomerById
+        operationId: showCustomer
         tags:
           - Customer
         parameters:
-          - in: path
+          - in: header
             name: customer_id
-            description: Customer id to show
+            description: Group name to delete
             type: string
-            required: true
         responses:
           "200":
             description: Application list
@@ -770,6 +755,12 @@ paths:
   /swagger:
     x-swagger-pipe: swagger_raw
 definitions:
+  GetProviders:
+    description: GetProviders response
+    type: string
+  GetClinicHistories:
+    description: GetClinicHistories response
+    type: string
   GetTurns:
     description: GetTurns response
     type: string
@@ -976,9 +967,9 @@ definitions:
       - location
   customerIdBodyParam:
     description: Customer id
-    type: integer
+    type: string
     minLength: 1
-    example: 1
+    example: "1"
   customerNameBodyParam:
     description: Customers name
     type: string
@@ -1018,7 +1009,7 @@ definitions:
     description: Customers Floor
     type: string
     minLength: 1
-    example: 1
+    example: "1"
   customerFlatBodyParam:
     description: Customers Flat
     type: string
@@ -1115,6 +1106,34 @@ definitions:
     minLength: 1
     example: "Rabia"
   vaccinationsQuantityBodyParam:
+    type: integer
+    minLength: 1
+    example: 1
+  userEmailBodyParam:
+    type: string
+    minLength: 1
+    example: "nicolas.ferretti2@gmail.com"
+  userRoleBodyParam:
+    type: integer
+    minLength: 1
+    example: 0
+  userPasswordBodyParam:
+    type: string
+    minLength: 1
+    example: "abc123"
+  userLastNameBodyParam:
+    type: string
+    minLength: 1
+    example: "Ferretti"
+  userUserNameBodyParam:
+    type: string
+    minLength: 1
+    example: "nicoferre"
+  userNameBodyParam:
+    type: string
+    minLength: 1
+    example: "Nicolas"
+  userIdBodyParam:
     type: integer
     minLength: 1
     example: 1
