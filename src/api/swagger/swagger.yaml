@@ -90,7 +90,7 @@ paths:
         description: Store new pets
         operationId: newPet
         tags:
-          - Pets
+          - Pet
         parameters:
           - name: content
             in: body
@@ -107,7 +107,7 @@ paths:
        description: Delete a pet
        operationId: deletePet
        tags:
-         - Pets
+         - Pet
        parameters:
           - in: header
             name: pet_id
@@ -125,7 +125,7 @@ paths:
       description: Modify a pet
       operationId: modifyPet
       tags:
-        - Pets
+        - Pet
       parameters:
         - name: content
           in: body
@@ -142,7 +142,7 @@ paths:
       description: Return the list of available pets
       operationId: petList
       tags:
-        - Pets
+        - Pet
       parameters:
           - in: header
             name: customer_id
@@ -161,7 +161,7 @@ paths:
         description: Store new providers
         operationId: newProvider
         tags:
-          - Provieders
+          - Provieder
         parameters:
           - name: content
             in: body
@@ -178,7 +178,7 @@ paths:
        description: Delete a provider
        operationId: deleteProvider
        tags:
-        - Provieders
+        - Provieder
        parameters:
           - in: header
             name: provider_id
@@ -196,7 +196,7 @@ paths:
       description: Modify a provider
       operationId: modifyProvider
       tags:
-        - Provieders
+        - Provieder
       parameters:
         - name: content
           in: body
@@ -213,7 +213,7 @@ paths:
       description: Return the list of available providers
       operationId: providerList
       tags:
-        - Provieders
+        - Provieder
       parameters:
           - in: header
             name: provider_id
@@ -469,8 +469,29 @@ paths:
               $ref: "#/definitions/GetVaccinations"
           "400":
             description: Value is required but was not provided
+  /security/login:
+        x-swagger-router-controller: security
+        post:
+          description: Login service
+          operationId: login
+          tags:
+            - Security
+          parameters:
+            - name: content
+              in: body
+              description: Body schema for new user post
+              required: true
+              schema:
+                $ref: '#/definitions/Login'
+          responses:
+            "200":
+              description: User details
+              schema:
+                $ref: "#/definitions/UserInformation"
+            "400":
+              description: >-
   /security/addUser:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: security
       post:
         description: Store new user
         operationId: newUser
@@ -486,15 +507,15 @@ paths:
         responses:
           "400":
             description: >-
-  /security/deleteUser/{user_id}:
-      x-swagger-router-controller: vetsis
+  /security/deleteUser:
+      x-swagger-router-controller: security
       delete:
         description: Delete a user
         operationId: deleteUser
         tags:
           - Security
         parameters:
-          - in: path
+          - in: header
             name: user_id
             description: User id to delete
             type: string
@@ -505,7 +526,7 @@ paths:
           "400":
             description: Value is required but was not provided
   /security/modifyUser/:
-    x-swagger-router-controller: vetsis
+    x-swagger-router-controller: security
     put:
       description: Modify a user
       operationId: modifyUser
@@ -522,28 +543,14 @@ paths:
         "400":
           description: >-
   /security/users:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: security
       get:
         description: Return the list of available users
-        operationId: showUser
-        tags:
-          - Security
-        responses:
-          "200":
-            description: Application list
-            schema:
-              $ref: "#/definitions/GetUsers"
-          "400":
-            description: Value is required but was not provided
-  /security/users/{user_id}:
-      x-swagger-router-controller: vetsis
-      get:
-        description: Return the list of available users
-        operationId: showUserById
+        operationId: showUsers
         tags:
           - Security
         parameters:
-          - in: path
+          - in: header
             name: user_id
             description: User id to show
             type: string
@@ -556,7 +563,7 @@ paths:
           "400":
             description: Value is required but was not provided
   /security/addRole:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: security
       post:
         description: Store new role
         operationId: newRole
@@ -572,15 +579,15 @@ paths:
         responses:
           "400":
             description: >-
-  /security/deleteRole/{role_id}:
-      x-swagger-router-controller: vetsis
+  /security/deleteRole:
+      x-swagger-router-controller: security
       delete:
         description: Delete a role
         operationId: deleteRole
         tags:
           - Security
         parameters:
-          - in: path
+          - in: header
             name: role_id
             description: Role id to delete
             type: string
@@ -591,7 +598,7 @@ paths:
           "400":
             description: Value is required but was not provided
   /security/modifyRole/:
-    x-swagger-router-controller: vetsis
+    x-swagger-router-controller: security
     put:
       description: Modify a role
       operationId: modifyRole
@@ -608,28 +615,14 @@ paths:
         "400":
           description: >-
   /security/roles:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: security
       get:
         description: Return the list of available roles
         operationId: showRole
         tags:
           - Security
-        responses:
-          "200":
-            description: Application list
-            schema:
-              $ref: "#/definitions/GetRoles"
-          "400":
-            description: Value is required but was not provided
-  /security/roles/{role_id}:
-      x-swagger-router-controller: vetsis
-      get:
-        description: Return the list of available roles
-        operationId: showRoleById
-        tags:
-          - Security
         parameters:
-          - in: path
+          - in: header
             name: role_id
             description: Role id to show
             type: string
@@ -801,6 +794,9 @@ paths:
   /swagger:
     x-swagger-pipe: swagger_raw
 definitions:
+  UserInformation:
+    description: UserInformation response
+    type: string
   GetRaces:
     description: GetRaces response
     type: string
@@ -911,6 +907,13 @@ definitions:
       - address
       - cellPhone
       - orderDate
+  Login:
+    description: Body schema for new user post
+    properties:
+      username:
+        $ref: '#/definitions/userUserNameBodyParam'
+      password:
+        $ref: '#/definitions/userPasswordBodyParam'
   NewUser:
     description: Body schema for new user post
     properties:

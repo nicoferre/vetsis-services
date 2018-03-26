@@ -1,8 +1,8 @@
-const vetsisController = require('../controller/customerController');
+const customerController = require('../controller/customerController');
 
 const newCustomer = (req, res) => {
   const content = req.body;
-  vetsisController.newCustomerController(content)
+  customerController.newCustomerController(content)
     .then(() => {
       res.status(201)
         .send();
@@ -19,7 +19,7 @@ const newCustomer = (req, res) => {
 
 const modifyCustomer = (req, res) => {
   const content = req.body;
-  vetsisController.modifyCustomerController(content)
+  customerController.modifyCustomerController(content)
     .then(() => {
       res.status(201)
         .send();
@@ -39,7 +39,7 @@ const showCustomer = (req, res) => {
   let callbackSuccess = function callbackSuccess(customers) {
     return res.send(customers);
   };
-  vetsisController.showCustomerController(customerId, callbackSuccess);
+  customerController.showCustomerController(customerId, callbackSuccess);
 };
 
 const deleteCustomer = (req, res) => {
@@ -72,13 +72,13 @@ const deleteCustomer = (req, res) => {
       .send(error);
   };
 
-  vetsisController
+  customerController
     .deleteCustomerController(customerId)
     .then(success, error);
 };
 
 module.exports = {
-  newCustomer ,
+  newCustomer,
   deleteCustomer,
   modifyCustomer,
   showCustomer
