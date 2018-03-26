@@ -30,7 +30,7 @@ paths:
         responses:
           "400":
             description: >-
-  /customer/deleteCustomer/:
+  /customer/deleteCustomer:
       x-swagger-router-controller: customer
       delete:
         description: Delete a customers
@@ -48,7 +48,7 @@ paths:
             description: Delete customer
           "400":
             description: Value is required but was not provided
-  /customer/modifyCustomer/:
+  /customer/modifyCustomer:
     x-swagger-router-controller: customer
     put:
       description: Modify a customers
@@ -101,7 +101,7 @@ paths:
         responses:
           "400":
             description: >-
-  /pet/deletePet/{pet_id}:
+  /pet/deletePet:
      x-swagger-router-controller: vetsis
      delete:
        description: Delete a pet
@@ -109,11 +109,11 @@ paths:
        tags:
          - Pets
        parameters:
-         - in: path
-           name: pet_id
-           description: Pet id to delete
-           type: string
-           required: true
+          - in: header
+            name: pet_id
+            description: Group name to delete
+            type: string
+            required: true
        responses:
          "200":
            description: Delete pet
@@ -143,26 +143,11 @@ paths:
       operationId: petList
       tags:
         - Pets
-      responses:
-        "200":
-          description: Application list
-          schema:
-            $ref: "#/definitions/GetPets"
-        "400":
-          description: Value is required but was not provided
-  /pet/pets/{customer_id}:
-    x-swagger-router-controller: vetsis
-    get:
-      description: Return the list of available pets
-      operationId: showPetByCustomerId
-      tags:
-        - Pets
       parameters:
-          - in: path
+          - in: header
             name: customer_id
-            description: Customer id to show
+            description: Group name to delete
             type: string
-            required: true
       responses:
         "200":
           description: Application list
@@ -187,7 +172,7 @@ paths:
         responses:
           "400":
             description: >-
-  /provider/deleteProvider/{provider_id}:
+  /provider/deleteProvider:
      x-swagger-router-controller: vetsis
      delete:
        description: Delete a provider
@@ -195,11 +180,11 @@ paths:
        tags:
         - Provieders
        parameters:
-         - in: path
-           name: provider_id
-           description: provider id to delete
-           type: string
-           required: true
+          - in: header
+            name: provider_id
+            description: provider id to delete
+            type: string
+            required: true
        responses:
          "200":
            description: Delete provider
@@ -229,6 +214,11 @@ paths:
       operationId: providerList
       tags:
         - Provieders
+      parameters:
+          - in: header
+            name: provider_id
+            description: Group name to delete
+            type: string
       responses:
         "200":
           description: Provider list
@@ -253,7 +243,7 @@ paths:
         responses:
           "400":
             description: >-
-  /clinicHistory/deleteClinicHistory/{clinic_history_id}:
+  /clinicHistory/deleteClinicHistory:
       x-swagger-router-controller: vetsis
       delete:
         description: Delete a clinic history
@@ -261,11 +251,11 @@ paths:
         tags:
           - Clinic History
         parameters:
-          - name: clinic_history_id
-            in: path
-            required: true
-            description: The id of the clinic history to delete
+          - in: header
+            name: clinic_history_id
+            description: provider id to delete
             type: string
+            required: true
         responses:
           "200":
             description: Delete clinic history
@@ -288,7 +278,7 @@ paths:
       responses:
         "400":
           description: >-
-  /clinicHistory/clinicHistories/{pet_id}:
+  /clinicHistory/clinicHistories:
       x-swagger-router-controller: vetsis
       get:
         description: Return the list of available clinic histories
@@ -296,25 +286,10 @@ paths:
         tags:
           - Clinic History
         parameters:
-          - name: pet_id
-            in: path
-            required: true
+          - name: clinic_history_id
+            in: header
             description: The id of the pet to retrieve
             type: string
-        responses:
-          "200":
-            description: Clinic histories list
-            schema:
-              $ref: "#/definitions/GetClinicHistories"
-          "400":
-            description: Value is required but was not provided
-  /clinicHistory/clinicHistories/:
-      x-swagger-router-controller: vetsis
-      get:
-        description: Return the list of available clinic histories
-        operationId: showClinicHistory
-        tags:
-          - Clinic History
         responses:
           "200":
             description: Clinic histories list
@@ -752,9 +727,83 @@ paths:
               $ref: "#/definitions/GetTurns"
           "400":
             description: Value is required but was not provided
+  /race/addRace:
+      x-swagger-router-controller: race
+      post:
+        description: Store new race
+        operationId: newRace
+        tags:
+          - Race
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new race post
+            required: true
+            schema:
+              $ref: '#/definitions/NewRace'
+        responses:
+          "400":
+            description: >-
+  /race/deleteRace:
+      x-swagger-router-controller: race
+      delete:
+        description: Delete a race
+        operationId: deleteRace
+        tags:
+          - Race
+        parameters:
+          - in: header
+            name: race_id
+            description: Race id to delete
+            type: string
+            required: true
+        responses:
+          "200":
+            description: Delete race
+          "400":
+            description: Value is required but was not provided
+  /race/modifyRace/:
+    x-swagger-router-controller: race
+    put:
+      description: Modify a race
+      operationId: modifyRace
+      tags:
+        - Race
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for modify a race post
+          required: true
+          schema:
+            $ref: '#/definitions/NewRace'
+      responses:
+        "400":
+          description: >-
+  /race/races:
+      x-swagger-router-controller: race
+      get:
+        description: Return the list of available races
+        operationId: showRaceById
+        tags:
+          - Race
+        parameters:
+          - in: header
+            name: race_id
+            description: Race id to show
+            type: string
+        responses:
+          "200":
+            description: Application list
+            schema:
+              $ref: "#/definitions/GetRaces"
+          "400":
+            description: Value is required but was not provided
   /swagger:
     x-swagger-pipe: swagger_raw
 definitions:
+  GetRaces:
+    description: GetRaces response
+    type: string
   GetProviders:
     description: GetProviders response
     type: string
@@ -782,6 +831,21 @@ definitions:
   GetCustomers:
     description: GetCustomers response
     type: string
+  NewRace:
+    description: Body schema for new role post
+    properties:
+     id:
+       $ref: '#/definitions/vaccinationsIdBodyParam'
+     idCustomer:
+       $ref: '#/definitions/customerIdBodyParam'
+     idPet:
+       $ref: '#/definitions/petIdBodyParam'
+     date:
+       $ref: '#/definitions/clinicHistoryDateBodyParam'
+    required:
+     - idCustomer
+     - idPet
+     - date
   NewTurn:
     description: Body schema for new role post
     properties:
@@ -887,6 +951,8 @@ definitions:
         $ref: '#/definitions/petIdBodyParam'
       name:
         $ref: '#/definitions/petNameBodyParam'
+      kind:
+        $ref: '#/definitions/petRaceBodyParam'
       race:
         $ref: '#/definitions/petRaceBodyParam'
       gender:

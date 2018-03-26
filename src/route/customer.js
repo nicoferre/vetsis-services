@@ -78,7 +78,7 @@ const deleteCustomer = (req, res) => {
 };
 
 module.exports = {
-  newCustomer,
+  newCustomer ,
   deleteCustomer,
   modifyCustomer,
   showCustomer
