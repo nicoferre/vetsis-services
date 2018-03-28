@@ -8,8 +8,8 @@ const newUser = (user) => {
   return new Promise(promise);
 };
 
-const loginUser = (user, callbackSuccess) => {
-  dao.loginUser(user, callbackSuccess);
+const loginUser = (user, callbackSuccess, callbackError) => {
+  dao.loginUser(user, callbackSuccess, callbackError);
 };
 
 module.exports = {

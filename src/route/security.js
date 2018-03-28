@@ -23,7 +23,10 @@ const login = (req, res) => {
   let callbackSuccess = function callbackSuccess(user) {
     return res.send(user);
   };
-  securityController.loginUser(content, callbackSuccess);
+  let callbackError = function callbackError(err) {
+    return res.status(500).send(err);
+  };
+  securityController.loginUser(content, callbackSuccess, callbackError);
 };
 
 module.exports = {

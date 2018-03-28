@@ -12,7 +12,7 @@ function MongoDBDao() {
     connection = db;
   });
 
-  this.loginUser = (user, callback) => {
+  this.loginUser = (user, callback, callbackError) => {
     return new Promise((resolve, reject) => {
       const query = { username: user.username, password: user.password };
       console.log(user);
@@ -25,6 +25,15 @@ function MongoDBDao() {
               code: 400,
               message: 'Internal Server Error.',
             };
+            callbackError(true);
+            return reject(error);
+          }
+          if (Object.keys(result).length === 0) {
+            const error = {
+              code: 400,
+              message: 'Internal Server Error.',
+            };
+            callbackError(error);
             return reject(error);
           }
           callback(result);
