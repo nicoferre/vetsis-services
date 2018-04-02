@@ -15,7 +15,6 @@ function MongoDBDao() {
   this.loginUser = (user, callback, callbackError) => {
     return new Promise((resolve, reject) => {
       const query = { username: user.username, password: user.password };
-      console.log(user);
       connection.collection('users')
         .find(query)
         .toArray(function (err, result) {
