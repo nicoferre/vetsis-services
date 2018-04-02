@@ -94,9 +94,25 @@ function MongoDBDao() {
     return promiseFind;
   };
 
-  /*this.storeCustomer = function (customer) {
-    const promise = (resolve, reject) => {
-      connection.collection('customers').insertOne(customer, function (err) {
+  this.newOrder = function (order) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('orders').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        order.id = parseInt(res) +1;
+        order.idProvider = parseInt(order.idProvider);
+        order.date = new Date();
+        resolve(true);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('orders').insertOne(order, function (err) {
           if (err) {
             console.error(`Error:  ${err}`);
             const error = {
@@ -105,12 +121,13 @@ function MongoDBDao() {
             };
             return reject(error);
           }
-          console.info('customer inserted');
+          console.info('orders inserted');
           resolve();
         });
-    };
-    return new Promise(promise);
-  };*/
+      });
+    });
+    return promiseFind;
+  };
 
   this.modifyCustomer = function (customer) {
     return new Promise((resolve, reject) => {
@@ -147,6 +164,25 @@ function MongoDBDao() {
           resolve(res.deletedCount);
           console.info('Customer in process of delete');
         });
+    });
+  };
+
+  this.showOrders = (callback) => {
+    return new Promise((resolve, reject) => {
+        connection.collection('orders')
+          .find({})
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
     });
   };
 

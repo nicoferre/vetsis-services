@@ -163,7 +163,7 @@ paths:
         description: Store new providers
         operationId: newProvider
         tags:
-          - Provieder
+          - Provider
         parameters:
           - name: content
             in: body
@@ -180,7 +180,7 @@ paths:
        description: Delete a provider
        operationId: deleteProvider
        tags:
-        - Provieder
+        - Provider
        parameters:
           - in: header
             name: provider_id
@@ -198,7 +198,7 @@ paths:
       description: Modify a provider
       operationId: modifyProvider
       tags:
-        - Provieder
+        - Provider
       parameters:
         - name: content
           in: body
@@ -215,7 +215,7 @@ paths:
       description: Return the list of available providers
       operationId: showProviders
       tags:
-        - Provieder
+        - Provider
       parameters:
           - in: header
             name: provider_id
@@ -228,6 +228,39 @@ paths:
             $ref: "#/definitions/GetProviders"
         "400":
           description: Value is required but was not provided
+  /provider/orders:
+    x-swagger-router-controller: provider
+    get:
+      description: Return the list of  orders
+      operationId: showOrders
+      tags:
+        - Provider
+      responses:
+        "200":
+          description: Provider list
+          schema:
+            $ref: "#/definitions/GetOrders"
+        "400":
+          description: Value is required but was not provided}
+  /provider/newOrder:
+    x-swagger-router-controller: provider
+    post:
+      description: Store new orders
+      operationId: newOrder
+      tags:
+        - Provider
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for new provider post
+          required: true
+          schema:
+            $ref: '#/definitions/NewOrders'
+      responses:
+        "200":
+          description: >-
+        "400":
+          description: >-
   /clinicHistory/addClinicHistory:
       x-swagger-router-controller: vetsis
       post:
@@ -802,6 +835,8 @@ definitions:
   GetRaces:
     description: GetRaces response
     type: string
+  GetOrders:
+    description: GetOrders response
   GetProviders:
     description: GetProviders response
     type: string
@@ -904,6 +939,18 @@ definitions:
       - name
       - address
       - cellPhone
+  NewOrders:
+    description: Body schema for new order post
+    properties:
+      idProvider:
+        $ref: '#/definitions/providerIdBodyParam'
+      amount:
+        $ref: '#/definitions/orderAmountBodyParam'
+      observations:
+        $ref: '#/definitions/providerCellPhoneBodyParam'
+    required:
+      - idProvider
+      - amount
   Login:
     description: Body schema for new user post
     properties:
@@ -1114,7 +1161,7 @@ definitions:
     minLength: 1
     example: "17/09/1989"
   providerIdBodyParam:
-    type: integer
+    type: string
     minLength: 1
     example: 1
   providerNameBodyParam:
@@ -1194,3 +1241,7 @@ definitions:
     type: integer
     minLength: 1
     example: 1
+  orderAmountBodyParam:
+    type: string
+    minLength: 1
+    example: 45.1
