@@ -169,7 +169,7 @@ function MongoDBDao() {
   this.showOrders = (callback) => {
     return new Promise((resolve, reject) => {
         connection.collection('orders')
-          .find({})
+          .aggregate([{ $lookup: { from: 'providers', localField: 'idProvider', foreignField: 'id', as: 'ordersdetails'}}])
           .toArray(function (err, result) {
             if (err) {
               console.error(`Error:  ${err}`);
