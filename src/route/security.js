@@ -1,12 +1,11 @@
 const securityController = require('../controller/securityController');
-const console = require('../utils/logger').logger;
 
 const newUser = (req, res) => {
   const content = req.body;
   securityController.newUser(content)
-    .then(() => {
+    .then((user) => {
       res.status(201)
-        .send();
+        .send(user);
     }, (err) => {
       res.status(err.code)
         .send({

@@ -3,7 +3,7 @@ const dao = require('../dao/mongoDBDao');
 const newUser = (user) => {
   const promise = (resolve, reject) => {
     dao.storeUser(user)
-      .then(() => resolve(), err => reject(err));
+      .then((user) => resolve(user), err => reject(err));
   };
   return new Promise(promise);
 };

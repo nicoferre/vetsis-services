@@ -42,9 +42,22 @@ function MongoDBDao() {
   };
 
   this.storeUser = function (user) {
-    const promise = (resolve, reject) => {
-      connection.collection('users')
-        .insertOne(user, function (err) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('users').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        user.id = parseInt(res) +1;
+        resolve(user);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('users').insertOne(user, function (err) {
           if (err) {
             console.error(`Error:  ${err}`);
             const error = {
@@ -53,11 +66,12 @@ function MongoDBDao() {
             };
             return reject(error);
           }
-          console.info('user inserted');
-          resolve();
+          console.info('customer inserted');
+          resolve(user);
         });
-    };
-    return new Promise(promise);
+      });
+    });
+    return promiseFind;
   };
 
   this.storeCustomer = function (customer) {
