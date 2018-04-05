@@ -192,23 +192,6 @@ paths:
            description: Delete provider
          "400":
            description: Value is required but was not provide
-  /provider/modifyProvider:
-    x-swagger-router-controller: provider
-    put:
-      description: Modify a provider
-      operationId: modifyProvider
-      tags:
-        - Provider
-      parameters:
-        - name: content
-          in: body
-          description: Body schema for modify a provider post
-          required: true
-          schema:
-            $ref: '#/definitions/NewProviders'
-      responses:
-        "400":
-          description: >-
   /provider/providers:
     x-swagger-router-controller: provider
     get:
