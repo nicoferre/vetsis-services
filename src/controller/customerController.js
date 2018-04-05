@@ -3,7 +3,7 @@ const dao = require('../dao/mongoDBDao');
 const newCustomerController = (customer) => {
   const promise = (resolve, reject) => {
     dao.storeCustomer(customer)
-      .then(() => resolve(), err => reject(err));
+      .then((customer) => resolve(customer), err => reject(err));
   };
   return new Promise(promise);
 };

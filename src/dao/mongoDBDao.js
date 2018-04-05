@@ -72,7 +72,7 @@ function MongoDBDao() {
           return reject(error);
         }
         customer.id = parseInt(res) +1;
-        resolve(true);
+        resolve(customer);
       });
     }).then(() => {
       return new Promise((resolve, reject) => {
@@ -86,7 +86,7 @@ function MongoDBDao() {
             return reject(error);
           }
           console.info('customer inserted');
-          resolve();
+          resolve(customer);
         });
       });
     });

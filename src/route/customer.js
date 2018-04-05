@@ -3,9 +3,9 @@ const customerController = require('../controller/customerController');
 const newCustomer = (req, res) => {
   const content = req.body;
   customerController.newCustomerController(content)
-    .then(() => {
-      res.status(201)
-        .send();
+    .then((customer) => {
+      res.status(200)
+        .send(customer);
     }, (err) => {
       res.status(err.code)
         .send({
