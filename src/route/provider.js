@@ -85,10 +85,47 @@ const deleteProvider = (req, res) => {
     .then(success, error);
 };
 
+const deleteOrder = (req, res) => {
+  const orderId = req.headers.order_id;
+  console.info(orderId);
+  const success = (data) => {
+    console.info(data);
+    if (data === 0) {
+      const error = {
+        error: {
+          code: 404,
+          message: 'No provider found with that name.',
+        },
+      };
+      return res.status(404)
+        .send(error);
+    } else {
+      res.status(204)
+        .send();
+    }
+  };
+
+  const error = () => {
+    const error = {
+      error: {
+        code: 500,
+        message: 'Internal Server Error.',
+      },
+    };
+    return res.status(500)
+      .send(error);
+  };
+
+  providerController
+    .deleteOrder(orderId)
+    .then(success, error);
+};
+
 module.exports = {
   showProviders,
   newOrder,
   showOrders,
   newProvider,
   deleteProvider,
+  deleteOrder,
 };

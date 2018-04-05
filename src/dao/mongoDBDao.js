@@ -180,10 +180,28 @@ function MongoDBDao() {
     });
   };
 
+  this.deleteOrder = function (orderId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(orderId) };
+      connection.collection('orders')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('Order in process of delete');
+        });
+    });
+  };
+
   this.deleteProvider = function (providerId) {
     return new Promise((resolve, reject) => {
       const myQuery = { id: parseInt(providerId) };
-      console.info(providerId);
       connection.collection('providers')
         .deleteOne(myQuery, (err, res) => {
           if (err) {

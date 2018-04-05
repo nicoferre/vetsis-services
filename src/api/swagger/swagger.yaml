@@ -261,6 +261,24 @@ paths:
           description: >-
         "400":
           description: >-
+  /provider/deleteOrder:
+     x-swagger-router-controller: provider
+     delete:
+       description: Delete order
+       operationId: deleteOrder
+       tags:
+        - Provider
+       parameters:
+          - in: header
+            name: order_id
+            description: order id to delete
+            type: string
+            required: true
+       responses:
+         "200":
+           description: Delete order
+         "400":
+           description: Value is required but was not provide
   /clinicHistory/addClinicHistory:
       x-swagger-router-controller: vetsis
       post:

@@ -26,10 +26,13 @@ const newProvider = (provider) => {
 
 const deleteProvider = providerId => dao.deleteProvider(providerId);
 
+const deleteOrder = orderId => dao.deleteOrder(orderId);
+
 module.exports = {
   showProviders,
   newOrder,
   showOrders,
   newProvider,
   deleteProvider,
+  deleteOrder,
 };
