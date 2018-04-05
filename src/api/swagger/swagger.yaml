@@ -1163,7 +1163,7 @@ definitions:
   providerIdBodyParam:
     type: string
     minLength: 1
-    example: 1
+    example: "1"
   providerNameBodyParam:
     type: string
     minLength: 1
@@ -1244,4 +1244,4 @@ definitions:
   orderAmountBodyParam:
     type: string
     minLength: 1
-    example: 45.1
+    example: "45.1"

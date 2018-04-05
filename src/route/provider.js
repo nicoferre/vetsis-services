@@ -17,11 +17,10 @@ const showOrders = (req, res) => {
 
 const newOrder = (req, res) => {
   const content = req.body;
-  console.info(content);
   providerController.newOrder(content)
-    .then(() => {
-      res.status(201)
-        .send();
+    .then((order) => {
+      res.status(200)
+        .send(order);
     }, (err) => {
       res.status(err.code)
         .send({
@@ -33,8 +32,63 @@ const newOrder = (req, res) => {
     });
 };
 
+const newProvider = (req, res) => {
+  const content = req.body;
+  providerController.newProvider(content)
+    .then((order) => {
+      res.status(200)
+        .send(order);
+    }, (err) => {
+      res.status(err.code)
+        .send({
+          error: {
+            code: err.code,
+            message: err.message,
+          },
+        });
+    });
+};
+
+const deleteProvider = (req, res) => {
+  const providerId = req.headers.provider_id;
+  console.info(providerId);
+  const success = (data) => {
+    console.info(data);
+    if (data === 0) {
+      const error = {
+        error: {
+          code: 404,
+          message: 'No provider found with that name.',
+        },
+      };
+      return res.status(404)
+        .send(error);
+    } else {
+      res.status(204)
+        .send();
+    }
+  };
+
+  const error = () => {
+    const error = {
+      error: {
+        code: 500,
+        message: 'Internal Server Error.',
+      },
+    };
+    return res.status(500)
+      .send(error);
+  };
+
+  providerController
+    .deleteProvider(providerId)
+    .then(success, error);
+};
+
 module.exports = {
   showProviders,
   newOrder,
   showOrders,
+  newProvider,
+  deleteProvider,
 };

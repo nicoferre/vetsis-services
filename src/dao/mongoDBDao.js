@@ -93,6 +93,39 @@ function MongoDBDao() {
     return promiseFind;
   };
 
+  this.newProvider = function (provider) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('providers').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        provider.id = parseInt(res) +1;
+        resolve(true);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('providers').insertOne(provider, function (err) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          console.info('provider inserted');
+          resolve(provider);
+        });
+      });
+    });
+    return promiseFind;
+  };
+
   this.newOrder = function (order) {
     const promiseFind = new Promise((resolve, reject) => {
       connection.collection('orders').count((err, res) => {
@@ -121,7 +154,7 @@ function MongoDBDao() {
             return reject(error);
           }
           console.info('orders inserted');
-          resolve();
+          resolve(order);
         });
       });
     });
@@ -147,9 +180,29 @@ function MongoDBDao() {
     });
   };
 
+  this.deleteProvider = function (providerId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(providerId) };
+      console.info(providerId);
+      connection.collection('providers')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('Provider in process of delete');
+        });
+    });
+  };
+
   this.deleteCustomer = function (customerId) {
     return new Promise((resolve, reject) => {
-      const myQuery = { id: customerId };
+      const myQuery = { id: parseInt(customerId) };
       connection.collection('customers')
         .deleteOne(myQuery, (err, res) => {
           if (err) {
