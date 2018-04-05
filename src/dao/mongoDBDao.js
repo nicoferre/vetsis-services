@@ -174,8 +174,8 @@ function MongoDBDao() {
             };
             return reject(error);
           }
-          resolve(res.deletedCount);
-          console.info('Customer in process of delete');
+          resolve(customer);
+          console.info('Customer in process of update');
         });
     });
   };
@@ -330,6 +330,95 @@ function MongoDBDao() {
     });
   };
 
+  this.deleteCategory = function (categoryId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(categoryId) };
+      connection.collection('categories')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('Category in process of delete');
+        });
+    });
+  };
+
+  this.newCategory = function (category) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('categories').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        category.id = parseInt(res) +1;
+        resolve(true);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('categories').insertOne(category, function (err) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          console.info('category inserted');
+          resolve(category);
+        });
+      });
+    });
+    return promiseFind;
+  };
+
+  this.showCategories = ( callback) => {
+    return new Promise((resolve, reject) => {
+        connection.collection('categories')
+          .find({})
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+    });
+  };
+
+  this.modifyCategory = function (category) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: category.id };
+      connection.collection('categories')
+        .updateOne(myQuery, category, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(category);
+          console.info('Customer in process of update');
+        });
+    });
+  };
 }
 
 const mongoDBDao = new MongoDBDao();

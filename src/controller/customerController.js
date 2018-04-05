@@ -11,7 +11,7 @@ const newCustomerController = (customer) => {
 const modifyCustomerController = (customer) => {
   const promise = (resolve, reject) => {
     dao.modifyCustomer(customer)
-      .then(() => resolve(), err => reject(err));
+      .then((customer) => resolve(customer), err => reject(err));
   };
   return new Promise(promise);
 };

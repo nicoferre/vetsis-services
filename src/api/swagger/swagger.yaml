@@ -65,6 +65,8 @@ paths:
           schema:
             $ref: '#/definitions/NewCustomers'
       responses:
+        "200":
+          description: >-
         "400":
           description: >-
   /customer/customers:
@@ -827,9 +829,86 @@ paths:
               $ref: "#/definitions/GetRaces"
           "400":
             description: Value is required but was not provided
+  /category/addCategory:
+      x-swagger-router-controller: category
+      post:
+        description: Store new category
+        operationId: newCategory
+        tags:
+          - Category
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new category post
+            required: true
+            schema:
+              $ref: '#/definitions/NewCategory'
+        responses:
+          "200":
+            description: >-
+          "400":
+            description: >-
+  /category/deleteCategory:
+      x-swagger-router-controller: category
+      delete:
+        description: Delete a category
+        operationId: deleteCategory
+        tags:
+          - Category
+        parameters:
+          - in: header
+            name: category_id
+            description: Category id to delete
+            type: string
+            required: true
+        responses:
+          "204":
+            description: Delete category
+          "400":
+            description: Value is required but was not provided
+  /category/modifyCategory:
+    x-swagger-router-controller: category
+    put:
+      description: Modify a category
+      operationId: modifyCategory
+      tags:
+        - Category
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for modify a category post
+          required: true
+          schema:
+            $ref: '#/definitions/NewCategory'
+      responses:
+        "200":
+          description: >-
+        "400":
+          description: >-
+  /category/categories:
+      x-swagger-router-controller: category
+      get:
+        description: Return the list of available categories
+        operationId: showCategories
+        tags:
+          - Category
+        parameters:
+          - in: header
+            name: category_id
+            type: string
+        responses:
+          "200":
+            description: Application list
+            schema:
+              $ref: "#/definitions/GetCategories"
+          "400":
+            description: Value is required but was not provided
   /swagger:
     x-swagger-pipe: swagger_raw
 definitions:
+  GetCategories:
+    description: GetCategories response
+    type: string
   UserInformation:
     description: UserInformation response
     type: string
@@ -1046,6 +1125,13 @@ definitions:
     required:
       - idPet
       - date
+  NewCategory:
+    description: Body schema for new customer post
+    properties:
+      id:
+        $ref: '#/definitions/customerIdBodyParam'
+      name:
+        $ref: '#/definitions/customerNameBodyParam'
   NewCustomers:
     description: Body schema for new customer post
     properties:
