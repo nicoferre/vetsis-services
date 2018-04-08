@@ -26,9 +26,7 @@ const showProducts = (req, res) => {
 
 const deleteProduct = (req, res) => {
   const productId = req.headers.product_id;
-  console.info(productId);
   const success = (data) => {
-    console.info(data);
     if (data === 0) {
       const error = {
         error: {

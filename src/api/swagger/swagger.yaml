@@ -1273,6 +1273,10 @@ definitions:
         $ref: '#/definitions/petCastratedBodyParam'
       birthdayDate:
         $ref: '#/definitions/petBirthdayDateBodyParam'
+      idSpecies:
+        $ref: '#/definitions/customerIdBodyParam'
+      idBreed:
+        $ref: '#/definitions/customerIdBodyParam'
     required:
       - name
       - idCustomer

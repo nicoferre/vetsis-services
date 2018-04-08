@@ -26,9 +26,7 @@ const showCategories = (req, res) => {
 
 const deleteCategory = (req, res) => {
   const categoryId = req.headers.category_id;
-  console.info(categoryId);
   const success = (data) => {
-    console.info(data);
     if (data === 0) {
       const error = {
         error: {

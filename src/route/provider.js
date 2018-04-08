@@ -51,9 +51,7 @@ const newProvider = (req, res) => {
 
 const deleteProvider = (req, res) => {
   const providerId = req.headers.provider_id;
-  console.info(providerId);
   const success = (data) => {
-    console.info(data);
     if (data === 0) {
       const error = {
         error: {
@@ -87,9 +85,7 @@ const deleteProvider = (req, res) => {
 
 const deleteOrder = (req, res) => {
   const orderId = req.headers.order_id;
-  console.info(orderId);
   const success = (data) => {
-    console.info(data);
     if (data === 0) {
       const error = {
         error: {

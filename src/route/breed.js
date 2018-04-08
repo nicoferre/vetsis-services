@@ -19,7 +19,6 @@ const newBreed = (req, res) => {
 
 const showBreed = (req, res) => {
   const speciesId = req.headers.species_id;
-  console.info(speciesId);
   let callbackSuccess = function callbackSuccess(species) {
     return res.send(species);
   };
@@ -28,9 +27,7 @@ const showBreed = (req, res) => {
 
 const deleteBreed = (req, res) => {
   const breedId = req.headers.breed_id;
-  console.info(breedId);
   const success = (data) => {
-    console.info(data);
     if (data === 0) {
       const error = {
         error: {

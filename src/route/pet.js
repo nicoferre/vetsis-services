@@ -26,9 +26,7 @@ const showPets = (req, res) => {
 
 const deletePet = (req, res) => {
   const petId = req.headers.pet_id;
-  console.info(petId);
   const success = (data) => {
-    console.info(data);
     if (data === 0) {
       const error = {
         error: {

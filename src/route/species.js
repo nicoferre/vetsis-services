@@ -25,10 +25,7 @@ const showSpecies = (req, res) => {
 };
 
 const deleteSpecies = (req, res) => {
-  const speciesId = req.headers.species_id;
-  console.info(speciesId);
   const success = (data) => {
-    console.info(data);
     if (data === 0) {
       const error = {
         error: {
