@@ -1030,7 +1030,7 @@ definitions:
       idCategory:
         $ref: '#/definitions/customerIdBodyParam'
       quantity:
-        $ref: '#/definitions/vaccinationsNameBodyParam'
+        $ref: '#/definitions/customerIdBodyParam'
       price_one:
         $ref: '#/definitions/customerIdBodyParam'
       price_two:
