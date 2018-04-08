@@ -760,75 +760,75 @@ paths:
               $ref: "#/definitions/GetTurns"
           "400":
             description: Value is required but was not provided
-  /race/addRace:
-      x-swagger-router-controller: race
+  /breed/addBreed:
+      x-swagger-router-controller: breed
       post:
-        description: Store new race
-        operationId: newRace
+        description: Store new breed
+        operationId: newBreed
         tags:
-          - Race
+          - Breed
         parameters:
           - name: content
             in: body
-            description: Body schema for new race post
+            description: Body schema for new breed post
             required: true
             schema:
-              $ref: '#/definitions/NewRace'
+              $ref: '#/definitions/NewBreed'
         responses:
           "400":
             description: >-
-  /race/deleteRace:
-      x-swagger-router-controller: race
+  /breed/deleteBreed:
+      x-swagger-router-controller: breed
       delete:
-        description: Delete a race
-        operationId: deleteRace
+        description: Delete a breed
+        operationId: deleteBreed
         tags:
-          - Race
+          - Breed
         parameters:
           - in: header
-            name: race_id
-            description: Race id to delete
+            name: breed_id
+            description: Breed id to delete
             type: string
             required: true
         responses:
           "200":
-            description: Delete race
+            description: Delete breed
           "400":
             description: Value is required but was not provided
-  /race/modifyRace/:
-    x-swagger-router-controller: race
+  /breed/modifyBreed/:
+    x-swagger-router-controller: breed
     put:
-      description: Modify a race
-      operationId: modifyRace
+      description: Modify a breed
+      operationId: modifyBreed
       tags:
-        - Race
+        - Breed
       parameters:
         - name: content
           in: body
-          description: Body schema for modify a race post
+          description: Body schema for modify a breed post
           required: true
           schema:
-            $ref: '#/definitions/NewRace'
+            $ref: '#/definitions/NewBreed'
       responses:
         "400":
           description: >-
-  /race/races:
-      x-swagger-router-controller: race
+  /breed/breeds:
+      x-swagger-router-controller: breed
       get:
-        description: Return the list of available races
-        operationId: showRaceById
+        description: Return the list of available breeds
+        operationId: showBreed
         tags:
-          - Race
+          - Breed
         parameters:
           - in: header
-            name: race_id
-            description: Race id to show
+            name: breed_id
+            description: Breed id to show
             type: string
         responses:
           "200":
             description: Application list
             schema:
-              $ref: "#/definitions/GetRaces"
+              $ref: "#/definitions/GetBreeds"
           "400":
             description: Value is required but was not provided
   /category/addCategory:
@@ -1006,7 +1006,7 @@ paths:
           - Species
         parameters:
           - in: header
-            name: race_id
+            name: species_id
             description: Species id to delete
             type: string
             required: true
@@ -1066,8 +1066,8 @@ definitions:
   UserInformation:
     description: UserInformation response
     type: string
-  GetRaces:
-    description: GetRaces response
+  GetBreeds:
+    description: GetBreeds response
     type: string
   GetOrders:
     description: GetOrders response
@@ -1132,19 +1132,20 @@ definitions:
         $ref: '#/definitions/customerIdBodyParam'
       name:
         $ref: '#/definitions/vaccinationsNameBodyParam'
-  NewRace:
-    description: Body schema for new role post
-    properties:
-     idCustomer:
-       $ref: '#/definitions/customerIdBodyParam'
-     idPet:
-       $ref: '#/definitions/petIdBodyParam'
-     date:
-       $ref: '#/definitions/clinicHistoryDateBodyParam'
     required:
-     - idCustomer
-     - idPet
-     - date
+     - name
+  NewBreed:
+    description: Body schema for new breed post
+    properties:
+      id:
+       $ref: '#/definitions/customerIdBodyParam'
+      idSpecies:
+       $ref: '#/definitions/customerIdBodyParam'
+      name:
+        $ref: '#/definitions/vaccinationsNameBodyParam'
+    required:
+     - idSpecies
+     - name
   NewTurn:
     description: Body schema for new role post
     properties:

@@ -669,7 +669,7 @@ function MongoDBDao() {
   this.showSpecies = ( callback) => {
     return new Promise((resolve, reject) => {
       connection.collection('species')
-        .aggregate([{ $lookup: { from: 'customers', localField: 'idCustomer', foreignField: 'id', as: 'customerdetails'}}])
+        .find({})
         .toArray(function (err, result) {
           if (err) {
             console.error(`Error:  ${err}`);
@@ -700,6 +700,96 @@ function MongoDBDao() {
           }
           resolve(res.deletedCount);
           console.info('Species in process of delete');
+        });
+    });
+  };
+
+  this.modifyBreed = function (breed) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: breed.id };
+      connection.collection('breeds')
+        .updateOne(myQuery, breed, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(breed);
+          console.info('breed in process of update');
+        });
+    });
+  };
+
+  this.newBreed = function (breed) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('breeds').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        breed.id = parseInt(res) +1;
+        resolve(true);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('breeds').insertOne(breed, function (err) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          console.info('breed inserted');
+          resolve(breed);
+        });
+      });
+    });
+    return promiseFind;
+  };
+
+  this.showBreed = ( callback) => {
+    return new Promise((resolve, reject) => {
+      connection.collection('breeds')
+        .find({})
+        .toArray(function (err, result) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 400,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          callback(result);
+          resolve(true);
+        });
+    });
+  };
+
+  this.deleteBreed = function (breedId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(breedId) };
+      connection.collection('breeds')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('Breed in process of delete');
         });
     });
   };
