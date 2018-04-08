@@ -759,7 +759,7 @@ function MongoDBDao() {
   this.showBreed = ( callback) => {
     return new Promise((resolve, reject) => {
       connection.collection('breeds')
-        .find({})
+        .aggregate([{ $lookup: { from: 'species', localField: 'idSpecies', foreignField: 'id', as: 'speciesdetails'}}])
         .toArray(function (err, result) {
           if (err) {
             console.error(`Error:  ${err}`);
