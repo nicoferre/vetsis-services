@@ -1263,10 +1263,6 @@ definitions:
         $ref: '#/definitions/customerIdBodyParam'
       name:
         $ref: '#/definitions/petNameBodyParam'
-      kind:
-        $ref: '#/definitions/petRaceBodyParam'
-      race:
-        $ref: '#/definitions/petRaceBodyParam'
       gender:
         $ref: '#/definitions/petGenderBodyParam'
       castrated:
@@ -1280,10 +1276,10 @@ definitions:
     required:
       - name
       - idCustomer
-      - kind
-      - race
       - gender
       - birthdayDate
+      - idSpecies
+      - idBreed
   NewClinicHistory:
     description: Body schema for new clinic history post
     properties:
@@ -1418,11 +1414,6 @@ definitions:
     type: string
     minLength: 1
     example: Laika
-  petRaceBodyParam:
-    description: Customers Location
-    type: integer
-    minLength: 1
-    example: 0
   petGenderBodyParam:
     description: Customers Location
     type: integer
@@ -1520,4 +1511,3 @@ definitions:
   orderAmountBodyParam:
     type: string
     minLength: 1
-    example: "45.1"
