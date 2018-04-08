@@ -24,6 +24,13 @@ const showPets = (req, res) => {
   petController.showPets(callbackSuccess);
 };
 
+const lastId = (req, res) => {
+  let callbackSuccess = function callbackSuccess(pets) {
+    return res.sendStatus(pets);
+  };
+  petController.lastId(callbackSuccess);
+};
+
 const deletePet = (req, res) => {
   const petId = req.headers.pet_id;
   console.info(petId);
@@ -82,4 +89,5 @@ module.exports = {
   deletePet,
   modifyPet,
   showPets,
+  lastId,
 };

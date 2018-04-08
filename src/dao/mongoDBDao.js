@@ -579,7 +579,7 @@ function MongoDBDao() {
   this.showPets = ( callback) => {
     return new Promise((resolve, reject) => {
       connection.collection('pets')
-        .aggregate([{ $lookup: { from: 'categories', localField: 'idCategory', foreignField: 'id', as: 'categorydetails'}}])
+        .aggregate([{ $lookup: { from: 'customers', localField: 'idCustomer', foreignField: 'id', as: 'customerdetails'}}])
         .toArray(function (err, result) {
           if (err) {
             console.error(`Error:  ${err}`);
@@ -592,6 +592,23 @@ function MongoDBDao() {
           callback(result);
           resolve(true);
         });
+    });
+  };
+
+  this.lastId = ( callback) => {
+    return new Promise((resolve, reject) => {
+      connection.collection('pets').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        callback(parseInt(res));
+        resolve(true);
+      });
     });
   };
 
