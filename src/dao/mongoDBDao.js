@@ -433,6 +433,96 @@ function MongoDBDao() {
         });
     });
   };
+
+  this.modifyProduct = function (product) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: product.id };
+      connection.collection('products')
+        .updateOne(myQuery, product, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(product);
+          console.info('product in process of update');
+        });
+    });
+  };
+
+  this.newProduct = function (product) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('products').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        product.id = parseInt(res) +1;
+        resolve(true);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('products').insertOne(product, function (err) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          console.info('product inserted');
+          resolve(product);
+        });
+      });
+    });
+    return promiseFind;
+  };
+
+  this.showProducts = ( callback) => {
+    return new Promise((resolve, reject) => {
+      connection.collection('products')
+        .aggregate([{ $lookup: { from: 'categories', localField: 'idCategory', foreignField: 'id', as: 'categorydetails'}}])
+        .toArray(function (err, result) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 400,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          callback(result);
+          resolve(true);
+        });
+    });
+  };
+
+  this.deleteProduct = function (productId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(productId) };
+      connection.collection('products')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('Product in process of delete');
+        });
+    });
+  };
 }
 
 const mongoDBDao = new MongoDBDao();

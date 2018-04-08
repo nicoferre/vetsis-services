@@ -541,8 +541,6 @@ paths:
             schema:
               $ref: '#/definitions/NewUser'
         responses:
-          "200":
-            description: >-
           "400":
             description: >-
   /security/deleteUser:
@@ -903,9 +901,87 @@ paths:
               $ref: "#/definitions/GetCategories"
           "400":
             description: Value is required but was not provided
+  /product/addProduct:
+      x-swagger-router-controller: product
+      post:
+        description: Store new product
+        operationId: newProduct
+        tags:
+          - Products
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new product post
+            required: true
+            schema:
+              $ref: '#/definitions/NewProducts'
+        responses:
+          "200":
+            description: >-
+          "400":
+            description: >-
+  /product/deleteProduct:
+      x-swagger-router-controller: product
+      delete:
+        description: Delete a product
+        operationId: deleteProduct
+        tags:
+          - Products
+        parameters:
+          - in: header
+            name: product_id
+            description: Product id to delete
+            type: string
+            required: true
+        responses:
+          "204":
+            description: Delete product
+          "400":
+            description: Value is required but was not provided
+  /product/modifyProduct:
+    x-swagger-router-controller: product
+    put:
+      description: Modify a product
+      operationId: modifyProduct
+      tags:
+        - Products
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for modify a product post
+          required: true
+          schema:
+            $ref: '#/definitions/NewProducts'
+      responses:
+        "200":
+            description: >-
+        "400":
+          description: >-
+  /product/products:
+      x-swagger-router-controller: product
+      get:
+        description: Return the list of available products
+        operationId: showProducts
+        tags:
+          - Products
+        parameters:
+          - in: header
+            name: product_id
+            description: Product id to show
+            type: string
+        responses:
+          "200":
+            description: Application list
+            schema:
+              $ref: "#/definitions/GetProducts"
+          "400":
+            description: Value is required but was not provided
   /swagger:
     x-swagger-pipe: swagger_raw
 definitions:
+  GetProducts:
+    description: GetProducts response
+    type: string
   GetCategories:
     description: GetCategories response
     type: string
@@ -944,11 +1020,30 @@ definitions:
   GetCustomers:
     description: GetCustomers response
     type: string
+  NewProducts:
+    description: Body schema for new product post
+    properties:
+      id:
+        $ref: '#/definitions/customerIdBodyParam'
+      name:
+        $ref: '#/definitions/vaccinationsNameBodyParam'
+      idCategory:
+        $ref: '#/definitions/customerIdBodyParam'
+      quantity:
+        $ref: '#/definitions/vaccinationsNameBodyParam'
+      price_one:
+        $ref: '#/definitions/customerIdBodyParam'
+      price_two:
+        $ref: '#/definitions/customerIdBodyParam'
+      price_three:
+        $ref: '#/definitions/customerIdBodyParam'
+      price_four:
+        $ref: '#/definitions/customerIdBodyParam'
+      minimum_quantity:
+        $ref: '#/definitions/customerIdBodyParam'
   NewRace:
     description: Body schema for new role post
     properties:
-     id:
-       $ref: '#/definitions/vaccinationsIdBodyParam'
      idCustomer:
        $ref: '#/definitions/customerIdBodyParam'
      idPet:
@@ -962,8 +1057,6 @@ definitions:
   NewTurn:
     description: Body schema for new role post
     properties:
-     id:
-       $ref: '#/definitions/vaccinationsIdBodyParam'
      idCustomer:
        $ref: '#/definitions/customerIdBodyParam'
      idPet:
@@ -977,8 +1070,6 @@ definitions:
   NewRole:
     description: Body schema for new role post
     properties:
-      id:
-        $ref: '#/definitions/vaccinationsIdBodyParam'
       name:
           $ref: '#/definitions/vaccinationsNameBodyParam'
       startDate:
@@ -1128,8 +1219,6 @@ definitions:
   NewCategory:
     description: Body schema for new customer post
     properties:
-      id:
-        $ref: '#/definitions/customerIdBodyParam'
       name:
         $ref: '#/definitions/customerNameBodyParam'
   NewCustomers:
