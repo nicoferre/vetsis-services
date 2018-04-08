@@ -756,25 +756,42 @@ function MongoDBDao() {
     return promiseFind;
   };
 
-  this.showBreed = ( callback) => {
+  this.showBreed = (speciesId, callback) => {
     return new Promise((resolve, reject) => {
-      connection.collection('breeds')
-        .aggregate([{ $lookup: { from: 'species', localField: 'idSpecies', foreignField: 'id', as: 'speciesdetails'}}])
-        .toArray(function (err, result) {
-          if (err) {
-            console.error(`Error:  ${err}`);
-            const error = {
-              code: 400,
-              message: 'Internal Server Error.',
-            };
-            return reject(error);
-          }
-          callback(result);
-          resolve(true);
-        });
+      if (!speciesId) {
+        connection.collection('breeds')
+          .aggregate([{ $lookup: { from: 'species', localField: 'idSpecies', foreignField: 'id', as: 'speciesdetails'}}])
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      } else {
+        let query = { idSpecies: parseInt(speciesId) };
+        connection.collection('breeds')
+          .find(query)
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      }
     });
   };
-
   this.deleteBreed = function (breedId) {
     return new Promise((resolve, reject) => {
       const myQuery = { id: parseInt(breedId) };

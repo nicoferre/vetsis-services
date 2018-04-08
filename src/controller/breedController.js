@@ -8,8 +8,8 @@ const newBreed = (breed) => {
   return new Promise(promise);
 };
 
-const showBreed = (callbackSuccess) => {
-  dao.showBreed(callbackSuccess);
+const showBreed = (speciesId, callbackSuccess) => {
+  dao.showBreed(speciesId, callbackSuccess);
 };
 
 const deleteBreed = breedId => dao.deleteBreed(breedId);

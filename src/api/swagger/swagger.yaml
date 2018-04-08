@@ -821,7 +821,7 @@ paths:
           - Breed
         parameters:
           - in: header
-            name: breed_id
+            name: species_id
             description: Breed id to show
             type: string
         responses:

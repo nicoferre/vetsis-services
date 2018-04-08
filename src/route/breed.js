@@ -18,10 +18,12 @@ const newBreed = (req, res) => {
 };
 
 const showBreed = (req, res) => {
-  let callbackSuccess = function callbackSuccess(categories) {
-    return res.send(categories);
+  const speciesId = req.headers.species_id;
+  console.info(speciesId);
+  let callbackSuccess = function callbackSuccess(species) {
+    return res.send(species);
   };
-  breedController.showBreed(callbackSuccess);
+  breedController.showBreed(speciesId, callbackSuccess);
 };
 
 const deleteBreed = (req, res) => {
