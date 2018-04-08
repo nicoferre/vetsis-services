@@ -1,11 +1,11 @@
-const petController = require('../controller/petController');
+const speciesController = require('../controller/speciesController');
 
-const newPet = (req, res) => {
+const newSpecies = (req, res) => {
   const content = req.body;
-  petController.newPet(content)
-    .then((pet) => {
+  speciesController.newSpecies(content)
+    .then((species) => {
       res.status(200)
-        .send(pet);
+        .send(species);
     }, (err) => {
       res.status(err.code)
         .send({
@@ -17,16 +17,16 @@ const newPet = (req, res) => {
     });
 };
 
-const showPets = (req, res) => {
-  let callbackSuccess = function callbackSuccess(pets) {
-    return res.send(pets);
+const showSpecies = (req, res) => {
+  let callbackSuccess = function callbackSuccess(categories) {
+    return res.send(categories);
   };
-  petController.showPets(callbackSuccess);
+  speciesController.showSpecies(callbackSuccess);
 };
 
-const deletePet = (req, res) => {
-  const petId = req.headers.pet_id;
-  console.info(petId);
+const deleteSpecies = (req, res) => {
+  const speciesId = req.headers.species_id;
+  console.info(speciesId);
   const success = (data) => {
     console.info(data);
     if (data === 0) {
@@ -55,17 +55,17 @@ const deletePet = (req, res) => {
       .send(error);
   };
 
-  petController
-    .deletePet(petId)
+  speciesController
+    .deleteSpecies(speciesId)
     .then(success, error);
 };
 
-const modifyPet = (req, res) => {
+const modifySpecies = (req, res) => {
   const content = req.body;
-  petController.modifyPet(content)
-    .then((pet) => {
+  speciesController.modifySpecies(content)
+    .then((species) => {
       res.status(200)
-        .send(pet);
+        .send(species);
     }, (err) => {
       res.status(err.code)
         .send({
@@ -78,8 +78,8 @@ const modifyPet = (req, res) => {
 };
 
 module.exports = {
-  newPet,
-  deletePet,
-  modifyPet,
-  showPets,
+  newSpecies,
+  deleteSpecies,
+  modifySpecies,
+  showSpecies,
 };

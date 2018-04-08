@@ -151,23 +151,9 @@ paths:
         - Pet
       parameters:
           - in: header
-            name: customer_id
+            name: pet_id
             description: Group name to delete
             type: string
-      responses:
-        "200":
-          description: Application list
-          schema:
-            $ref: "#/definitions/GetPets"
-        "400":
-          description: Value is required but was not provided
-  /pet/lastId:
-    x-swagger-router-controller: pet
-    get:
-      description: Return the list of available pets
-      operationId: lastId
-      tags:
-        - Pet
       responses:
         "200":
           description: Application list
@@ -994,9 +980,83 @@ paths:
               $ref: "#/definitions/GetProducts"
           "400":
             description: Value is required but was not provided
+  /species/addSpecies:
+      x-swagger-router-controller: species
+      post:
+        description: Store new species
+        operationId: newSpecies
+        tags:
+          - Species
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new species post
+            required: true
+            schema:
+              $ref: '#/definitions/NewSpecies'
+        responses:
+          "400":
+            description: >-
+  /species/deleteSpecies:
+      x-swagger-router-controller: species
+      delete:
+        description: Delete a species
+        operationId: deleteSpecies
+        tags:
+          - Species
+        parameters:
+          - in: header
+            name: race_id
+            description: Species id to delete
+            type: string
+            required: true
+        responses:
+          "200":
+            description: Delete species
+          "400":
+            description: Value is required but was not provided
+  /species/modifySpecies/:
+    x-swagger-router-controller: species
+    put:
+      description: Modify a species
+      operationId: modifySpecies
+      tags:
+        - Species
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for modify a species post
+          required: true
+          schema:
+            $ref: '#/definitions/NewSpecies'
+      responses:
+        "400":
+          description: >-
+  /species/species:
+      x-swagger-router-controller: species
+      get:
+        description: Return the list of available species
+        operationId: showSpecies
+        tags:
+          - Species
+        parameters:
+          - in: header
+            name: species_id
+            description: Species id to show
+            type: string
+        responses:
+          "200":
+            description: Application list
+            schema:
+              $ref: "#/definitions/GetSpecies"
+          "400":
+            description: Value is required but was not provided
   /swagger:
     x-swagger-pipe: swagger_raw
 definitions:
+  GetSpecies:
+    description: GetSpecies response
+    type: string
   GetProducts:
     description: GetProducts response
     type: string
@@ -1065,6 +1125,13 @@ definitions:
      - quantity
      - price_one
      - minimum_quantity
+  NewSpecies:
+    description: Body schema for new species post
+    properties:
+      id:
+        $ref: '#/definitions/customerIdBodyParam'
+      name:
+        $ref: '#/definitions/vaccinationsNameBodyParam'
   NewRace:
     description: Body schema for new role post
     properties:

@@ -12,9 +12,6 @@ const showPets = (callbackSuccess) => {
   dao.showPets(callbackSuccess);
 };
 
-const lastId = (callbackSuccess) => {
-  dao.lastId(callbackSuccess);
-};
 const deletePet = petId => dao.deletePet(petId);
 
 const modifyPet = (pet) => {
@@ -30,5 +27,4 @@ module.exports = {
   showPets,
   modifyPet,
   deletePet,
-  lastId,
 };
