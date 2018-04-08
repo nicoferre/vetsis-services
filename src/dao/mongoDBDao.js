@@ -522,6 +522,96 @@ function MongoDBDao() {
           console.info('Product in process of delete');
         });
     });
+  }
+
+  this.modifyPet = function (pet) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: pet.id };
+      connection.collection('pets')
+        .updateOne(myQuery, pet, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(pet);
+          console.info('pet in process of update');
+        });
+    });
+  };
+
+  this.newPet = function (pet) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('pets').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        pet.id = parseInt(res) +1;
+        resolve(true);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('pets').insertOne(pet, function (err) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          console.info('pet inserted');
+          resolve(pet);
+        });
+      });
+    });
+    return promiseFind;
+  };
+
+  this.showPets = ( callback) => {
+    return new Promise((resolve, reject) => {
+      connection.collection('pets')
+        .aggregate([{ $lookup: { from: 'categories', localField: 'idCategory', foreignField: 'id', as: 'categorydetails'}}])
+        .toArray(function (err, result) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 400,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          callback(result);
+          resolve(true);
+        });
+    });
+  };
+
+  this.deletePet = function (petId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(petId) };
+      connection.collection('pets')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('Pet in process of delete');
+        });
+    });
   };
 }
 
