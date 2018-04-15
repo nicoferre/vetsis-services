@@ -73,7 +73,7 @@ const newRole = (req, res) => {
   const content = req.body;
   securityController.newRole(content)
     .then((role) => {
-      res.status(201)
+      res.status(200)
         .send(role);
     }, (err) => {
       res.status(err.code)

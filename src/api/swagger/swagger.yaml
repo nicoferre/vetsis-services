@@ -594,6 +594,8 @@ paths:
             schema:
               $ref: '#/definitions/NewRole'
         responses:
+          "200":
+            description: >-
           "400":
             description: >-
   /security/deleteRole:
@@ -1104,14 +1106,15 @@ definitions:
     properties:
       name:
           $ref: '#/definitions/vaccinationsNameBodyParam'
+      roleId:
+          $ref: '#/definitions/customerIdBodyParam'
       startDate:
           $ref: '#/definitions/clinicHistoryDateBodyParam'
       endDate:
           $ref: '#/definitions/clinicHistoryDateBodyParam'
     required:
       - name
-      - startDate
-      - endDate
+      - roleId
   NewVaccinations:
     description: Body schema for new vaccinations post
     properties:
