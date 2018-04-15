@@ -885,6 +885,7 @@ function MongoDBDao() {
       }
     });
   };
+
   this.deleteBreed = function (breedId) {
     return new Promise((resolve, reject) => {
       const myQuery = { id: parseInt(breedId) };
@@ -1080,6 +1081,115 @@ function MongoDBDao() {
           console.info('Turn in process of delete');
         });
     });
+  };
+
+  this.showUsers = (callback) => {
+    return new Promise((resolve, reject) => {
+      connection.collection('users')
+        .find()
+        .toArray(function (err, result) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 400,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          callback(result);
+          resolve(true);
+        });
+    });
+  };
+
+  this.deleteUser = function (userId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(userId) };
+      connection.collection('users')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('User   in process of delete');
+        });
+    });
+  };
+
+  this.showRoles = (callback) => {
+    return new Promise((resolve, reject) => {
+      connection.collection('roles')
+        .find()
+        .toArray(function (err, result) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 400,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          callback(result);
+          resolve(true);
+        });
+    });
+  };
+
+  this.deleteRole = function (roleId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(roleId) };
+      connection.collection('roles')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('Role   in process of delete');
+        });
+    });
+  };
+
+  this.newRole = function (role) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('roles').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        role.id = parseInt(res) +1;
+        resolve(role);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('roles').insertOne(role, function (err) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          console.info('customer inserted');
+          resolve(role);
+        });
+      });
+    });
+    return promiseFind;
   };
 }
 

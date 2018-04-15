@@ -565,23 +565,6 @@ paths:
             description: Delete user
           "400":
             description: Value is required but was not provided
-  /security/modifyUser/:
-    x-swagger-router-controller: security
-    put:
-      description: Modify a user
-      operationId: modifyUser
-      tags:
-        - Security
-      parameters:
-        - name: content
-          in: body
-          description: Body schema for modify a user post
-          required: true
-          schema:
-            $ref: '#/definitions/NewUser'
-      responses:
-        "400":
-          description: >-
   /security/users:
       x-swagger-router-controller: security
       get:
@@ -589,11 +572,6 @@ paths:
         operationId: showUsers
         tags:
           - Security
-        parameters:
-          - in: header
-            name: user_id
-            description: User id to show
-            type: string
         responses:
           "200":
             description: Application list
@@ -636,23 +614,6 @@ paths:
             description: Delete role
           "400":
             description: Value is required but was not provided
-  /security/modifyRole/:
-    x-swagger-router-controller: security
-    put:
-      description: Modify a role
-      operationId: modifyRole
-      tags:
-        - Security
-      parameters:
-        - name: content
-          in: body
-          description: Body schema for modify a role post
-          required: true
-          schema:
-            $ref: '#/definitions/NewRole'
-      responses:
-        "400":
-          description: >-
   /security/roles:
       x-swagger-router-controller: security
       get:

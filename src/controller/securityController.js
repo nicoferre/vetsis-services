@@ -8,11 +8,36 @@ const newUser = (user) => {
   return new Promise(promise);
 };
 
+const showUsers = (callbackSuccess) => {
+  dao.showUsers(callbackSuccess);
+};
+
+const deleteUser = userId => dao.deleteUser(userId);
+
 const loginUser = (user, callbackSuccess, callbackError) => {
   dao.loginUser(user, callbackSuccess, callbackError);
 };
 
+const newRole = (role) => {
+  const promise = (resolve, reject) => {
+    dao.storeRole(role)
+      .then((role) => resolve(role), err => reject(err));
+  };
+  return new Promise(promise);
+};
+
+const showRoles = (callbackSuccess) => {
+  dao.showRoles(callbackSuccess);
+};
+
+const deleteRole = roleId => dao.deleteRole(roleId);
+
 module.exports = {
   newUser,
-  loginUser
+  loginUser,
+  showUsers,
+  deleteUser,
+  newRole,
+  showRoles,
+  deleteRole,
 };
