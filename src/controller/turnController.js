@@ -8,8 +8,8 @@ const newTurn = (turn) => {
   return new Promise(promise);
 };
 
-const showTurn = (turnId, callbackSuccess) => {
-  dao.showTurn(turnId, callbackSuccess);
+const showTurns = (turnId, callbackSuccess) => {
+  dao.showTurns(turnId, callbackSuccess);
 };
 
 const deleteTurn = turnId => dao.deleteTurn(turnId);
@@ -24,7 +24,7 @@ const modifyTurn = (turn) => {
 
 module.exports = {
   newTurn,
-  showTurn,
+  showTurns,
   modifyTurn,
   deleteTurn,
 };

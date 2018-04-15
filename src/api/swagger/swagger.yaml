@@ -675,7 +675,7 @@ paths:
           "400":
             description: Value is required but was not provided
   /turn/addTurn:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: turn
       post:
         description: Store new turn
         operationId: newTurn
@@ -692,7 +692,7 @@ paths:
           "400":
             description: >-
   /turn/deleteTurn:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: turn
       delete:
         description: Delete a turn
         operationId: deleteTurn
@@ -710,7 +710,7 @@ paths:
           "400":
             description: Value is required but was not provided
   /turn/modifyTurn:
-    x-swagger-router-controller: vetsis
+    x-swagger-router-controller: turn
     put:
       description: Modify a turn
       operationId: modifyTurn
@@ -727,7 +727,7 @@ paths:
         "400":
           description: >-
   /turn/turns:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: turn
       get:
         description: Return the list of available turns
         operationId: showTurns
@@ -1386,19 +1386,14 @@ definitions:
     example: Cordoba
   petIdBodyParam:
     description: Pet id
-    type: string
+    type: integer
     minLength: 1
-    example: "1"
+    example: 1
   petNameBodyParam:
     description: Pet name
     type: string
     minLength: 1
     example: Laika
-  petRaceBodyParam:
-    description: Customers Location
-    type: integer
-    minLength: 1
-    example: 0
   petGenderBodyParam:
     description: Customers Location
     type: integer

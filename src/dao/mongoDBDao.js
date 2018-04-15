@@ -917,18 +917,46 @@ function MongoDBDao() {
     return promiseFind;
   };
 
-  this.showTurn = (speciesId, callback) => {
+  this.showTurns = (turnId, callback) => {
     return new Promise((resolve, reject) => {
-      if (!speciesId) {
+      if (!turnId) {
         connection.collection('turns')
-          .aggregate([{
-            $lookup: {
-              from: 'species',
-              localField: 'idSpecies',
-              foreignField: 'id',
-              as: 'speciesdetails'
+          .aggregate([
+            {
+              $lookup:
+                {
+                  from: "customers",
+                  localField: "idCustomer",
+                  foreignField: "id",
+                  as: "customer"
+                }
+            },
+            {
+              $unwind: "$customer"
+            },
+            {
+              $project: {
+                "customer._id": 0
+              }
+            },
+            {
+              $lookup:
+                {
+                  from: "pets",
+                  localField: "idPet",
+                  foreignField: "id",
+                  as: "pets"
+                }
+            },
+            {
+              $unwind: "$pets"
+            },
+            {
+              $project: {
+                "pets._id": 0
+              }
             }
-          }])
+          ])
           .toArray(function (err, result) {
             if (err) {
               console.error(`Error:  ${err}`);
@@ -942,9 +970,43 @@ function MongoDBDao() {
             resolve(true);
           });
       } else {
-        let query = { idSpecies: parseInt(speciesId) };
         connection.collection('turns')
-          .find(query)
+          .aggregate([
+            {
+              $lookup:
+                {
+                  from: "customers",
+                  localField: "idCustomer",
+                  foreignField: "id",
+                  as: "customer"
+                }
+            },
+            {
+              $unwind: "$customer"
+            },
+            {
+              $project: {
+                "customer._id": 0
+              }
+            },
+            {
+              $lookup:
+                {
+                  from: "pets",
+                  localField: "idPet",
+                  foreignField: "id",
+                  as: "pets"
+                }
+            },
+            {
+              $unwind: "$pets"
+            },
+            {
+              $project: {
+                "pets._id": 0
+              }
+            }
+          ])
           .toArray(function (err, result) {
             if (err) {
               console.error(`Error:  ${err}`);

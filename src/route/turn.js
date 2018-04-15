@@ -17,12 +17,12 @@ const newTurn = (req, res) => {
     });
 };
 
-const showTurn = (req, res) => {
+const showTurns = (req, res) => {
   const turnId = req.headers.turn_id;
   let callbackSuccess = function callbackSuccess(turn) {
     return res.send(turn);
   };
-  turnController.showTurn(turnId, callbackSuccess);
+  turnController.showTurns(turnId, callbackSuccess);
 };
 
 const deleteTurn = (req, res) => {
@@ -80,5 +80,5 @@ module.exports = {
   newTurn,
   deleteTurn,
   modifyTurn,
-  showTurn,
+  showTurns,
 };
