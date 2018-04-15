@@ -691,7 +691,7 @@ paths:
         responses:
           "400":
             description: >-
-  /turn/deleteTurn/{turn_id}:
+  /turn/deleteTurn:
       x-swagger-router-controller: vetsis
       delete:
         description: Delete a turn
@@ -699,7 +699,7 @@ paths:
         tags:
           - Turn
         parameters:
-          - in: path
+          - in: header
             name: turn_id
             description: Turn id to delete
             type: string
@@ -709,7 +709,7 @@ paths:
             description: Delete turn
           "400":
             description: Value is required but was not provided
-  /turn/modifyTurn/:
+  /turn/modifyTurn:
     x-swagger-router-controller: vetsis
     put:
       description: Modify a turn
@@ -726,33 +726,13 @@ paths:
       responses:
         "400":
           description: >-
-  /turn/turns/:
+  /turn/turns:
       x-swagger-router-controller: vetsis
       get:
         description: Return the list of available turns
         operationId: showTurns
         tags:
           - Turn
-        responses:
-          "200":
-            description: Application list
-            schema:
-              $ref: "#/definitions/GetTurns"
-          "400":
-            description: Value is required but was not provided
-  /turn/turns/{turn_id}:
-      x-swagger-router-controller: vetsis
-      get:
-        description: Return the list of available turns
-        operationId: showTurnsById
-        tags:
-          - Turn
-        parameters:
-          - in: path
-            name: turn_id
-            description: Turn id to show
-            type: string
-            required: true
         responses:
           "200":
             description: Application list
@@ -1414,6 +1394,11 @@ definitions:
     type: string
     minLength: 1
     example: Laika
+  petRaceBodyParam:
+    description: Customers Location
+    type: integer
+    minLength: 1
+    example: 0
   petGenderBodyParam:
     description: Customers Location
     type: integer

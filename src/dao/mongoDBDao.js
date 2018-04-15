@@ -862,6 +862,122 @@ function MongoDBDao() {
         });
     });
   };
+
+  this.modifyTurn = function (turn) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: turn.id };
+      connection.collection('turns')
+        .updateOne(myQuery, turn, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(turn);
+          console.info('turn in process of update');
+        });
+    });
+  };
+
+  this.newTurn = function (turn) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('turns')
+        .count((err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 400,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          turn.id = parseInt(res) + 1;
+          resolve(true);
+        });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('turns')
+          .insertOne(turn, function (err) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 500,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            console.info('turn inserted');
+            resolve(turn);
+          });
+      });
+    });
+    return promiseFind;
+  };
+
+  this.showTurn = (speciesId, callback) => {
+    return new Promise((resolve, reject) => {
+      if (!speciesId) {
+        connection.collection('turns')
+          .aggregate([{
+            $lookup: {
+              from: 'species',
+              localField: 'idSpecies',
+              foreignField: 'id',
+              as: 'speciesdetails'
+            }
+          }])
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      } else {
+        let query = { idSpecies: parseInt(speciesId) };
+        connection.collection('turns')
+          .find(query)
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      }
+    });
+  };
+  this.deleteTurn = function (turnId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(turnId) };
+      connection.collection('turns')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('Turn in process of delete');
+        });
+    });
+  };
 }
 
 const mongoDBDao = new MongoDBDao();
