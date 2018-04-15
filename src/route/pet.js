@@ -18,10 +18,11 @@ const newPet = (req, res) => {
 };
 
 const showPets = (req, res) => {
+  const customerId = req.headers.pet_id;
   let callbackSuccess = function callbackSuccess(pets) {
     return res.send(pets);
   };
-  petController.showPets(callbackSuccess);
+  petController.showPets(customerId, callbackSuccess);
 };
 
 const deletePet = (req, res) => {

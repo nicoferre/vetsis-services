@@ -594,7 +594,6 @@ paths:
             name: user_id
             description: User id to show
             type: string
-            required: true
         responses:
           "200":
             description: Application list

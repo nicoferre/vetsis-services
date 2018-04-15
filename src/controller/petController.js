@@ -8,8 +8,8 @@ const newPet = (pet) => {
   return new Promise(promise);
 };
 
-const showPets = (callbackSuccess) => {
-  dao.showPets(callbackSuccess);
+const showPets = (customerId, callbackSuccess) => {
+  dao.showPets(customerId, callbackSuccess);
 };
 
 const deletePet = petId => dao.deletePet(petId);

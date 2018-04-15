@@ -576,75 +576,116 @@ function MongoDBDao() {
     return promiseFind;
   };
 
-  this.showPets = ( callback) => {
-    return new Promise((resolve, reject) => {
-      connection.collection('pets')
-        .aggregate([
-          {
-            $lookup:
-              {
+  this.showPets = (customerId, callback) => {
+    if (!customerId){
+      return new Promise((resolve, reject) => {
+        connection.collection('pets')
+          .aggregate([
+            {
+              $lookup:
+                {
+                  from: "customers",
+                  localField: "idCustomer",
+                  foreignField: "id",
+                  as: "customer"
+                }
+            },
+            {
+              $unwind: "$customer"
+            },
+            {
+              $project: {
+                "customer._id": 0
+              }
+            },
+            {
+              $lookup:
+                {
+                  from: "species",
+                  localField: "idSpecies",
+                  foreignField: "id",
+                  as: "species"
+                }
+            },
+            {
+              $unwind: "$species"
+            },
+            {
+              $project: {
+                "species._id": 0
+              }
+            },
+            {
+              $lookup:
+                {
+                  from: "breeds",
+                  localField: "idBreed",
+                  foreignField: "id",
+                  as: "breeds"
+                }
+            },
+            {
+              $unwind: "$breeds"
+            },
+            {
+              $project: {
+                "breeds._id": 0
+              }
+            }
+          ])
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      });
+    } else {
+      return new Promise((resolve, reject) => {
+        let query = { idCustomer: parseInt(customerId) };
+        connection.collection('pets')
+          .aggregate([
+            {
+              $lookup: {
                 from: "customers",
                 localField: "idCustomer",
                 foreignField: "id",
-                as: "customer"
+                as: "customer" }
+            },
+            {
+              $unwind: "$customer"
+            },
+            {
+              $project: {
+                "customer._id": 0
               }
-          },
-          {
-            $unwind: "$customer"
-          },
-          {
-            $project: {
-              "customer._id": 0
-            }
-          },
-          {
-            $lookup:
-              {
-                from: "species",
-                localField: "idSpecies",
-                foreignField: "id",
-                as: "species"
+            },
+            {
+              $match:{
+                "customer.id": parseInt(customerId    )
               }
-          },
-          {
-            $unwind: "$species"
-          },
-          {
-            $project: {
-              "species._id": 0
+            }])
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
             }
-          },
-          {
-            $lookup:
-              {
-                from: "breeds",
-                localField: "idBreed",
-                foreignField: "id",
-                as: "breeds"
-              }
-          },
-          {
-            $unwind: "$breeds"
-          },
-          {
-            $project: {
-              "breeds._id": 0
-            }
-          }
-        ])
-        .toArray(function (err, result) {
-          if (err) {
-            console.error(`Error:  ${err}`);
-            const error = {
-              code: 400,
-              message: 'Internal Server Error.',
-            };
-            return reject(error);
-          }
-          callback(result);
-          resolve(true);
-        });
-    });
+            callback(result);
+            resolve(true);
+          });
+      });
+    }
+
   };
 
   this.deletePet = function (petId) {
