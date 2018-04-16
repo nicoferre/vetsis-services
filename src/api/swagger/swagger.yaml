@@ -620,7 +620,7 @@ paths:
       x-swagger-router-controller: security
       get:
         description: Return the list of available roles
-        operationId: showRole
+        operationId: showRoles
         tags:
           - Security
         parameters:
@@ -628,7 +628,6 @@ paths:
             name: role_id
             description: Role id to show
             type: string
-            required: true
         responses:
           "200":
             description: Application list

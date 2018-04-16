@@ -87,10 +87,11 @@ const newRole = (req, res) => {
 };
 
 const showRoles = (req, res) => {
+  const roleId = req.headers.role_id;
   let callbackSuccess = function callbackSuccess(roles) {
     return res.send(roles);
   };
-  securityController.showRoles(callbackSuccess);
+  securityController.showRoles(roleId, callbackSuccess);
 };
 
 const deleteRole = (req, res) => {

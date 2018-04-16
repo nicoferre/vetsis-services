@@ -1121,23 +1121,43 @@ function MongoDBDao() {
     });
   };
 
-  this.showRoles = (callback) => {
-    return new Promise((resolve, reject) => {
-      connection.collection('roles')
-        .find()
-        .toArray(function (err, result) {
-          if (err) {
-            console.error(`Error:  ${err}`);
-            const error = {
-              code: 400,
-              message: 'Internal Server Error.',
-            };
-            return reject(error);
-          }
-          callback(result);
-          resolve(true);
-        });
-    });
+  this.showRoles = (roleId, callback) => {
+    if (!roleId){
+      return new Promise((resolve, reject) => {
+        connection.collection('roles')
+          .find()
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      });
+    } else {
+      const query = { roleId: parseInt(roleId) };
+      return new Promise((resolve, reject) => {
+        connection.collection('roles')
+          .find(query)
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      });
+    }
   };
 
   this.deleteRole = function (roleId) {

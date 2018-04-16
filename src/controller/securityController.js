@@ -26,8 +26,8 @@ const newRole = (role) => {
   return new Promise(promise);
 };
 
-const showRoles = (callbackSuccess) => {
-  dao.showRoles(callbackSuccess);
+const showRoles = (roleId, callbackSuccess) => {
+  dao.showRoles(roleId, callbackSuccess);
 };
 
 const deleteRole = roleId => dao.deleteRole(roleId);
