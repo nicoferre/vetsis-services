@@ -20,7 +20,7 @@ const loginUser = (user, callbackSuccess, callbackError) => {
 
 const newRole = (role) => {
   const promise = (resolve, reject) => {
-    dao.storeRole(role)
+    dao.newRole(role)
       .then((role) => resolve(role), err => reject(err));
   };
   return new Promise(promise);
