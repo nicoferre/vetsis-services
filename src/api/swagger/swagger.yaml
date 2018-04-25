@@ -337,10 +337,10 @@ paths:
               $ref: "#/definitions/GetClinicHistories"
           "400":
             description: Value is required but was not provided
-  /vaccination/addVaccination/:
-      x-swagger-router-controller: vetsis
+  /vaccination/addVaccination:
+      x-swagger-router-controller: vaccination
       post:
-        description: Store new vaccination by pet
+        description: Store new vaccination
         operationId: newVaccination
         tags:
           - Vaccination
@@ -354,15 +354,15 @@ paths:
         responses:
           "400":
             description: >-
-  /vaccination/deleteVaccination/{pet_id}:
-      x-swagger-router-controller: vetsis
+  /vaccination/deleteVaccination:
+      x-swagger-router-controller: vaccination
       delete:
         description: Delete a vaccination
         operationId: deleteVaccination
         tags:
           - Vaccination
         parameters:
-          - in: path
+          - in: header
             name: pet_id
             description: Vaccination id to delete
             type: string
@@ -372,8 +372,8 @@ paths:
             description: Delete vaccination
           "400":
             description: Value is required but was not provided
-  /vaccination/modifyCustomer/:
-    x-swagger-router-controller: vetsis
+  /vaccination/modifyVaccination:
+    x-swagger-router-controller: vaccination
     put:
       description: Modify a vaccination
       operationId: modifyVaccination
@@ -396,117 +396,15 @@ paths:
         operationId: showVaccination
         tags:
           - Vaccination
+        parameters:
+          - name: pet_id
+            in: header
+            type: string
         responses:
           "200":
             description: Application list
             schema:
               $ref: "#/definitions/GetVaccination"
-          "400":
-            description: Value is required but was not provided
-  /vaccination/vaccinations/{pet_id}:
-      x-swagger-router-controller: vetsis
-      get:
-        description: Return the list of available vaccinations
-        operationId: showVaccinationById
-        tags:
-          - Vaccination
-        parameters:
-          - in: path
-            name: pet_id
-            description: Vaccination id to show
-            type: string
-            required: true
-        responses:
-          "200":
-            description: Application list
-            schema:
-              $ref: "#/definitions/GetVaccination"
-          "400":
-            description: Value is required but was not provided
-  /vaccinations/addVaccination/:
-      x-swagger-router-controller: vetsis
-      post:
-        description: Store new vaccinations
-        operationId: newVaccinations
-        tags:
-          - Vaccinations
-        parameters:
-          - name: content
-            in: body
-            description: Body schema for new vaccinations post
-            required: true
-            schema:
-              $ref: '#/definitions/NewVaccinations'
-        responses:
-          "400":
-            description: >-
-  /vaccinations/deleteVaccinations/{vaccinations_id}:
-      x-swagger-router-controller: vetsis
-      delete:
-        description: Delete a vaccinations by Id
-        operationId: deleteVaccinations
-        tags:
-          - Vaccinations
-        parameters:
-          - in: path
-            name: vaccinations_id
-            description: Vaccinations id to delete
-            type: string
-            required: true
-        responses:
-          "200":
-            description: Delete vaccinations
-          "400":
-            description: Value is required but was not provided
-  /vaccinations/modifyVaccinations/:
-    x-swagger-router-controller: vetsis
-    put:
-      description: Modify a vaccinations
-      operationId: modifyVaccinations
-      tags:
-        - Vaccinations
-      parameters:
-        - name: content
-          in: body
-          description: Body schema for modify a vaccinations post
-          required: true
-          schema:
-            $ref: '#/definitions/NewVaccinations'
-      responses:
-        "400":
-          description: >-
-  /vaccinations/vaccinations/{vaccinations_id}:
-      x-swagger-router-controller: vetsis
-      get:
-        description: Return the list of available vaccinations
-        operationId: showVaccinationsById
-        tags:
-          - Vaccinations
-        parameters:
-          - in: path
-            name: vaccinations_id
-            description: Vaccinations id to show
-            type: string
-            required: true
-        responses:
-          "200":
-            description: Application list
-            schema:
-              $ref: "#/definitions/GetVaccinations"
-          "400":
-            description: Value is required but was not provided
-  /vaccinations/vaccinations/:
-      x-swagger-router-controller: vetsis
-      get:
-        description: Return the list of available vaccinations
-        operationId: showVaccinations
-        tags:
-          - Vaccinations
-        responses:
-          "200":
-            description: Application list
-            schema:
-              $ref: "#/definitions/GetVaccinations"
           "400":
             description: Value is required but was not provided
   /security/login:
@@ -1027,9 +925,6 @@ definitions:
   GetUsers:
     description: GetUsers response
     type: string
-  GetVaccinations:
-    description: GetVaccinations response
-    type: string
   GetVaccination:
     description: GetVaccination response
     type: string
@@ -1114,21 +1009,6 @@ definitions:
     required:
       - name
       - roleId
-  NewVaccinations:
-    description: Body schema for new vaccinations post
-    properties:
-      id:
-        $ref: '#/definitions/vaccinationsIdBodyParam'
-      name:
-          $ref: '#/definitions/vaccinationsNameBodyParam'
-      dueDate:
-          $ref: '#/definitions/clinicHistoryDateBodyParam'
-      quantity:
-          $ref: '#/definitions/vaccinationsQuantityBodyParam'
-    required:
-      - name
-      - dueDate
-      - quantity
   NewProviders:
     description: Body schema for new provider post
     properties:
