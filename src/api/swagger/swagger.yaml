@@ -363,7 +363,7 @@ paths:
           - Vaccination
         parameters:
           - in: header
-            name: pet_id
+            name: vaccination_id
             description: Vaccination id to delete
             type: string
             required: true
@@ -390,7 +390,7 @@ paths:
         "400":
           description: >-
   /vaccination/vaccinations:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: vaccination
       get:
         description: Return the list of available vaccinations
         operationId: showVaccination

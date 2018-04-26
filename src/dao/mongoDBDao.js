@@ -1211,6 +1211,114 @@ function MongoDBDao() {
     });
     return promiseFind;
   };
+
+  this.modifyVaccination = function (vaccination) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: vaccination.id };
+      connection.collection('vaccinations')
+        .updateOne(myQuery, vaccination, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(vaccination);
+          console.info('vaccination in process of update');
+        });
+    });
+  };
+
+  this.newVaccination = function (vaccination) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('vaccinations').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        vaccination.id = parseInt(res) +1;
+        resolve(true);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('vaccinations').insertOne(vaccination, function (err) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          console.info('vaccination inserted');
+          resolve(vaccination);
+        });
+      });
+    });
+    return promiseFind;
+  };
+
+  this.showVaccination = (vaccinationId, callback) => {
+    return new Promise((resolve, reject) => {
+      if (!vaccinationId) {
+        connection.collection('vaccinations')
+          .aggregate([{ $lookup: { from: 'pets', localField: 'idPet', foreignField: 'id', as: 'details'}}])
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      } else {
+        let query = { idSpecies: parseInt(vaccinationId) };
+        connection.collection('vaccinations')
+          .find(query)
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      }
+    });
+  };
+
+  this.deleteVaccination = function (vaccinationId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(vaccinationId) };
+      connection.collection('vaccinations')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('Vaccination in process of delete');
+        });
+    });
+  };
 }
 
 const mongoDBDao = new MongoDBDao();
