@@ -13,6 +13,39 @@ consumes:
 produces:
   - application/json
 paths:
+  /location/addLocation:
+      x-swagger-router-controller: location
+      post:
+        description: Store new location
+        operationId: newLocation
+        tags:
+          - Location
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new location post
+            required: true
+            schema:
+              $ref: '#/definitions/NewLocation'
+        responses:
+          "200":
+            description: >-
+          "400":
+            description: >-
+  /location/locations:
+      x-swagger-router-controller: location
+      get:
+        description: Return the list of available locations
+        operationId: showLocations
+        tags:
+          - Location
+        responses:
+          "200":
+            description: Application list
+            schema:
+              $ref: "#/definitions/GetLocations"
+          "400":
+            description: Value is required but was not provided
   /customer/addCustomer:
       x-swagger-router-controller: customer
       post:
@@ -342,6 +375,77 @@ paths:
               $ref: "#/definitions/GetClinicHistories"
           "400":
             description: Value is required but was not provided
+  /clinicHistoryInformation/addClinicHistoryInformation:
+      x-swagger-router-controller: clinicHistoryInformation
+      post:
+        description: Store new clinic history information
+        operationId: newClinicHistoryInformation
+        tags:
+          - Clinic History Information
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new clinic history post
+            required: true
+            schema:
+              $ref: '#/definitions/NewClinicHistoryInformation'
+        responses:
+          "400":
+            description: >-
+  /clinicHistoryInformation/deleteClinicHistoryInformation:
+      x-swagger-router-controller: clinicHistoryInformation
+      delete:
+        description: Delete a clinic history information
+        operationId: deleteClinicHistoryInformation
+        tags:
+          - Clinic History Information
+        parameters:
+          - in: header
+            name: id
+            description: clinic history information id to delete
+            type: string
+            required: true
+        responses:
+          "200":
+            description: Delete clinic history information
+          "400":
+            description: Value is required but was not provided
+  /clinicHistoryInformation/modifyClinicHistoryInformation:
+    x-swagger-router-controller: clinicHistoryInformation
+    put:
+      description: Modify a clinic history information
+      operationId: modifyClinicHistoryInformation
+      tags:
+        - Clinic History Information
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for modify a clinic history post
+          required: true
+          schema:
+            $ref: '#/definitions/NewClinicHistoryInformation'
+      responses:
+        "400":
+          description: >-
+  /clinicHistoryInformation/clinicHistoryInformations:
+      x-swagger-router-controller: clinicHistoryInformation
+      get:
+        description: Return the list of available clinic history informations
+        operationId: showClinicHistoriesInformation
+        tags:
+          - Clinic History Information
+        parameters:
+          - name: id
+            in: header
+            description: The id of the clinic history information to retrieve
+            type: string
+        responses:
+          "200":
+            description: Clinic history information list
+            schema:
+              $ref: "#/definitions/GetClinicHistoryInformation"
+          "400":
+            description: Value is required but was not provided
   /vaccination/addVaccination:
       x-swagger-router-controller: vaccination
       post:
@@ -410,6 +514,79 @@ paths:
             description: Application list
             schema:
               $ref: "#/definitions/GetVaccination"
+          "400":
+            description: Value is required but was not provided
+
+
+  /vaccinationInformation/addVaccinationInformation:
+      x-swagger-router-controller: vaccinationInformation
+      post:
+        description: Store new vaccination information
+        operationId: newVaccinationInformation
+        tags:
+          - Vaccination Information
+        parameters:
+          - name: content
+            in: body
+            description: Body schema for new vaccination post
+            required: true
+            schema:
+              $ref: '#/definitions/NewVaccinationInformation'
+        responses:
+          "400":
+            description: >-
+  /vaccinationInformation/deleteVaccinationInformation:
+      x-swagger-router-controller: vaccinationInformation
+      delete:
+        description: Delete a vaccination information
+        operationId: deleteVaccinationInformation
+        tags:
+          - Vaccination Information
+        parameters:
+          - in: header
+            name: id
+            description: vaccination information id to delete
+            type: string
+            required: true
+        responses:
+          "200":
+            description: Delete vaccination information
+          "400":
+            description: Value is required but was not provided
+  /vaccinationInformation/modifyVaccinationInformation:
+    x-swagger-router-controller: vaccinationInformation
+    put:
+      description: Modify a vaccination information
+      operationId: modifyVaccinationInformation
+      tags:
+        - Vaccination Information
+      parameters:
+        - name: content
+          in: body
+          description: Body schema for modify a clinic history post
+          required: true
+          schema:
+            $ref: '#/definitions/NewVaccinationInformation'
+      responses:
+        "400":
+          description: >-
+  /vaccinationInformation/vaccinationInformations:
+      x-swagger-router-controller: vaccinationInformation
+      get:
+        description: Return the list of available vaccination informations
+        operationId: showVaccinationInformation
+        tags:
+          - Vaccination Information
+        parameters:
+          - name: id
+            in: header
+            description: The id of the vaccination information to retrieve
+            type: string
+        responses:
+          "200":
+            description: Clinic history information list
+            schema:
+              $ref: "#/definitions/GetVaccinationInformation"
           "400":
             description: Value is required but was not provided
   /security/login:
@@ -898,6 +1075,15 @@ paths:
   /swagger:
     x-swagger-pipe: swagger_raw
 definitions:
+  GetVaccinationInformation:
+    description: GetClinicHistoryInformation response
+    type: string
+  GetClinicHistoryInformation:
+    description: GetClinicHistoryInformation response
+    type: string
+  GetLocations:
+    description: GetLocations response
+    type: string
   GetSpecies:
     description: GetSpecies response
     type: string
@@ -939,6 +1125,28 @@ definitions:
   GetCustomers:
     description: GetCustomers response
     type: string
+  NewVaccinationInformation:
+    description: Body schema for new product post
+    properties:
+      id:
+        $ref: '#/definitions/customerIdBodyParam'
+      idVaccination:
+        $ref: '#/definitions/customerIdBodyParam'
+      date:
+       $ref: '#/definitions/clinicHistoryDateBodyParam'
+      hour:
+       $ref: '#/definitions/hourBodyParam'
+    required:
+     - idVaccination
+     - date
+     - hour
+  NewLocation:
+    description: Body schema for new product post
+    properties:
+      id:
+        $ref: '#/definitions/customerIdBodyParam'
+      name:
+        $ref: '#/definitions/vaccinationsNameBodyParam'
   NewProducts:
     description: Body schema for new product post
     properties:
@@ -1115,24 +1323,31 @@ definitions:
     properties:
       id:
         $ref: '#/definitions/clinicHistoryIdBodyParam'
-      idCustomer:
-        $ref: '#/definitions/customerIdBodyParam'
       idPet:
         $ref: '#/definitions/petIdBodyParam'
+      date:
+        $ref: '#/definitions/clinicHistoryDateBodyParam'
+    required:
+      - idPet
+      - date
+  NewClinicHistoryInformation:
+    description: Body schema for new clinic history post
+    properties:
+      id:
+        $ref: '#/definitions/clinicHistoryIdBodyParam'
+      idClinicHistory:
+        $ref: '#/definitions/clinicHistoryIdBodyParam'
       date:
         $ref: '#/definitions/clinicHistoryDateBodyParam'
       hour:
        $ref: '#/definitions/hourBodyParam'
       observation:
         $ref: '#/definitions/clinicHistoryObservationBodyParam'
-      nextReview:
-        $ref: '#/definitions/clinicHistoryNextReviewBodyParam'
-      hourNextReview:
-       $ref: '#/definitions/hourBodyParam'
     required:
-      - idCustomer
-      - idPet
+      - idClinicHistory
       - date
+      - hour
+      - observation
   NewVaccination:
     description: Body schema for new vaccination post
     properties:
@@ -1169,12 +1384,14 @@ definitions:
         $ref: '#/definitions/customerCellPhoneBodyParam'
       street:
         $ref: '#/definitions/customerStreetBodyParam'
+      number:
+        $ref: '#/definitions/customerNumberBodyParam'
       floor:
         $ref: '#/definitions/customerFloorBodyParam'
       flat:
         $ref: '#/definitions/customerFlatBodyParam'
-      location:
-        $ref: '#/definitions/customerLocationBodyParam'
+      idLocation:
+        $ref: '#/definitions/customerIdBodyParam'
     required:
       - name
       - lastname
@@ -1226,7 +1443,12 @@ definitions:
     description: Customers Street
     type: string
     minLength: 1
-    example: La Habana 1935
+    example: La Habana
+  customerNumberBodyParam:
+    description: Customers number
+    type: string
+    minLength: 1
+    example: "1935"
   customerFloorBodyParam:
     description: Customers Floor
     type: string
@@ -1237,11 +1459,6 @@ definitions:
     type: string
     minLength: 1
     example: A
-  customerLocationBodyParam:
-    description: Customers Location
-    type: string
-    minLength: 1
-    example: Cordoba
   petIdBodyParam:
     description: Pet id
     type: integer
