@@ -1398,7 +1398,7 @@ definitions:
       - docNum
       - cellPhone
       - street
-      - location
+      - number
   hourBodyParam:
     description: Hour turn
     type: string

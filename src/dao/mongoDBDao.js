@@ -1518,6 +1518,58 @@ function MongoDBDao() {
       }
     });
   };
+
+  this.newLocation = function (location) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('locations').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        location.id = parseInt(res) +1;
+        resolve(location);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('locations').insertOne(location, function (err) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          console.info('location inserted');
+          resolve(location);
+        });
+      });
+    });
+    return promiseFind;
+  };
+
+  this.showLocations = (callback) => {
+    return new Promise((resolve, reject) => {
+      connection.collection('locations')
+        .find()
+        .toArray(function (err, result) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 400,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          callback(result);
+          resolve(true);
+        });
+    });
+  };
 }
 
 const mongoDBDao = new MongoDBDao();
