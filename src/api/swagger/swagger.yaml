@@ -222,6 +222,11 @@ paths:
       operationId: showOrders
       tags:
         - Provider
+      parameters:
+        - in: header
+          name: provider_id
+          description: Group name to delete
+          type: string
       responses:
         "200":
           description: Provider list
@@ -267,7 +272,7 @@ paths:
          "400":
            description: Value is required but was not provide
   /clinicHistory/addClinicHistory:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: clinicHistory
       post:
         description: Store new clinic history
         operationId: newClinicHistory
@@ -284,7 +289,7 @@ paths:
           "400":
             description: >-
   /clinicHistory/deleteClinicHistory:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: clinicHistory
       delete:
         description: Delete a clinic history
         operationId: deleteClinicHistory
@@ -292,7 +297,7 @@ paths:
           - Clinic History
         parameters:
           - in: header
-            name: clinic_history_id
+            name: history_id
             description: provider id to delete
             type: string
             required: true
@@ -302,7 +307,7 @@ paths:
           "400":
             description: Value is required but was not provided
   /clinicHistory/modifyClinicHistory:
-    x-swagger-router-controller: vetsis
+    x-swagger-router-controller: clinicHistory
     put:
       description: Modify a clinic history
       operationId: modifyClinicHistory
@@ -319,14 +324,14 @@ paths:
         "400":
           description: >-
   /clinicHistory/clinicHistories:
-      x-swagger-router-controller: vetsis
+      x-swagger-router-controller: clinicHistory
       get:
         description: Return the list of available clinic histories
-        operationId: showClinicHistoryByPetId
+        operationId: showClinicHistories
         tags:
           - Clinic History
         parameters:
-          - name: clinic_history_id
+          - name: history_id
             in: header
             description: The id of the pet to retrieve
             type: string
@@ -1116,15 +1121,18 @@ definitions:
         $ref: '#/definitions/petIdBodyParam'
       date:
         $ref: '#/definitions/clinicHistoryDateBodyParam'
+      hour:
+       $ref: '#/definitions/hourBodyParam'
       observation:
         $ref: '#/definitions/clinicHistoryObservationBodyParam'
       nextReview:
         $ref: '#/definitions/clinicHistoryNextReviewBodyParam'
+      hourNextReview:
+       $ref: '#/definitions/hourBodyParam'
     required:
       - idCustomer
       - idPet
       - date
-      - observation
   NewVaccination:
     description: Body schema for new vaccination post
     properties:

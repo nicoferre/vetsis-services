@@ -4,8 +4,8 @@ const showProviders = (providerId, callbackSuccess) => {
   dao.showProviders(providerId, callbackSuccess);
 };
 
-const showOrders = (callbackSuccess) => {
-  dao.showOrders(callbackSuccess);
+const showOrders = (providerId, callbackSuccess) => {
+  dao.showOrders(providerId, callbackSuccess);
 };
 
 const newOrder = (order) => {

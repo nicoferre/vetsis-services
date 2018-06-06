@@ -9,10 +9,11 @@ const showProviders = (req, res) => {
 };
 
 const showOrders = (req, res) => {
+  const providerId = req.headers.provider_id;
   let callbackSuccess = function callbackSuccess(orders) {
     return res.send(orders);
   };
-  providerController.showOrders(callbackSuccess);
+  providerController.showOrders(providerId, callbackSuccess);
 };
 
 const newOrder = (req, res) => {

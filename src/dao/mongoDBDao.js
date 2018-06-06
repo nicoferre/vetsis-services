@@ -251,8 +251,9 @@ function MongoDBDao() {
     });
   };
 
-  this.showOrders = (callback) => {
+  this.showOrders = (providerId, callback) => {
     return new Promise((resolve, reject) => {
+      if (!providerId) {
         connection.collection('orders')
           .aggregate([{ $lookup: { from: 'providers', localField: 'idProvider', foreignField: 'id', as: 'ordersdetails'}}])
           .toArray(function (err, result) {
@@ -267,6 +268,22 @@ function MongoDBDao() {
             callback(result);
             resolve(true);
           });
+      } else {
+        connection.collection('orders')
+          .aggregate([{ $lookup: { from: 'providers', localField: 'idProvider', foreignField: 'id', as: 'ordersdetails'}}])
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      }
     });
   };
 
@@ -288,7 +305,7 @@ function MongoDBDao() {
             resolve(true);
           });
       } else {
-        let query = { id: providerId };
+        let query = { id: parseInt(providerId) };
         connection.collection('providers')
           .find(query)
           .toArray(function (err, result) {
@@ -1317,6 +1334,188 @@ function MongoDBDao() {
           resolve(res.deletedCount);
           console.info('Vaccination in process of delete');
         });
+    });
+  };
+
+  this.modifyClinicHistory = function (clinicHistory) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: clinicHistory.id };
+      connection.collection('clinicHistories')
+        .updateOne(myQuery, clinicHistory, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(clinicHistory);
+          console.info('clinicHistory in process of update');
+        });
+    });
+  };
+
+  this.newClinicHistory = function (clinicHistory) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('clinicHistories').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        clinicHistory.id = parseInt(res) +1;
+        resolve(true);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('clinicHistories').insertOne(clinicHistory, function (err) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          console.info('pet inserted');
+          resolve(clinicHistory);
+        });
+      });
+    });
+    return promiseFind;
+  };
+
+  this.deleteClinicHistory = function (clinicHistoryId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(clinicHistoryId) };
+      connection.collection('clinicHistories')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('Clinic History in process of delete');
+        });
+    });
+  };
+
+  this.showClinicHistories = (clinicHistoryId, callback) => {
+    return new Promise((resolve, reject) => {
+      if (!clinicHistoryId) {
+        connection.collection('clinicHistories')
+          .aggregate([
+            {
+              $lookup:
+                {
+                  from: "customers",
+                  localField: "idCustomer",
+                  foreignField: "id",
+                  as: "customer"
+                }
+            },
+            {
+              $unwind: "$customer"
+            },
+            {
+              $project: {
+                "customer._id": 0
+              }
+            },
+            {
+              $lookup:
+                {
+                  from: "pets",
+                  localField: "idPet",
+                  foreignField: "id",
+                  as: "pets"
+                }
+            },
+            {
+              $unwind: "$pets"
+            },
+            {
+              $project: {
+                "pets._id": 0
+              }
+            }
+          ])
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      } else {
+        connection.collection('clinicHistories')
+          .aggregate([
+            {
+              $match:{
+                "id": parseInt(clinicHistoryId)
+              }
+            },
+            {
+              $lookup:
+                {
+                  from: "customers",
+                  localField: "idCustomer",
+                  foreignField: "id",
+                  as: "customer"
+                }
+            },
+            {
+              $unwind: "$customer"
+            },
+            {
+              $project: {
+                "customer._id": 0
+              }
+            },
+            {
+              $lookup:
+                {
+                  from: "pets",
+                  localField: "idPet",
+                  foreignField: "id",
+                  as: "pets"
+                }
+            },
+            {
+              $unwind: "$pets"
+            },
+            {
+              $project: {
+                "pets._id": 0
+              }
+            }
+          ])
+          .toArray(function (err, result) {
+            if (err) {
+              console.error(`Error:  ${err}`);
+              const error = {
+                code: 400,
+                message: 'Internal Server Error.',
+              };
+              return reject(error);
+            }
+            callback(result);
+            resolve(true);
+          });
+      }
     });
   };
 }
