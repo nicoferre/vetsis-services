@@ -431,7 +431,7 @@ paths:
       x-swagger-router-controller: clinicHistoryInformation
       get:
         description: Return the list of available clinic history informations
-        operationId: showClinicHistoriesInformation
+        operationId: showClinicHistoriesInformations
         tags:
           - Clinic History Information
         parameters:

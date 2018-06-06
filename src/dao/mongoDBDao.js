@@ -1416,23 +1416,6 @@ function MongoDBDao() {
             {
               $lookup:
                 {
-                  from: "customers",
-                  localField: "idCustomer",
-                  foreignField: "id",
-                  as: "customer"
-                }
-            },
-            {
-              $unwind: "$customer"
-            },
-            {
-              $project: {
-                "customer._id": 0
-              }
-            },
-            {
-              $lookup:
-                {
                   from: "pets",
                   localField: "idPet",
                   foreignField: "id",
@@ -1567,6 +1550,100 @@ function MongoDBDao() {
           }
           callback(result);
           resolve(true);
+        });
+    });
+  };
+
+  this.modifyClinicHistoryInformation = function (clinicHistoryInformation) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: clinicHistoryInformation.id };
+      connection.collection('clinicHistoryInformations')
+        .updateOne(myQuery, clinicHistoryInformation, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(clinicHistoryInformation);
+          console.info('clinicHistoryInformation in process of update');
+        });
+    });
+  };
+
+  this.newClinicHistoryInformation = function (clinicHistoryInformation) {
+    const promiseFind = new Promise((resolve, reject) => {
+      connection.collection('clinicHistoryInformations').count((err, res) => {
+        if (err) {
+          console.error(`Error:  ${err}`);
+          const error = {
+            code: 400,
+            message: 'Internal Server Error.',
+          };
+          return reject(error);
+        }
+        clinicHistoryInformation.id = parseInt(res) +1;
+        resolve(true);
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        connection.collection('clinicHistoryInformations').insertOne(clinicHistoryInformation, function (err) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          console.info('clinicHistoryInformation inserted');
+          resolve(clinicHistoryInformation);
+        });
+      });
+    });
+    return promiseFind;
+  };
+
+  this.showClinicHistoriesInformations = (clinicHistoryId, callback) => {
+    return new Promise((resolve, reject) => {
+      connection.collection('clinicHistoryInformations')
+        .aggregate([{ $lookup: { from: 'clinicHistories', localField: 'idClinicHistory', foreignField: 'id', as: 'details'}},{
+          $match:{
+            "id": parseInt(clinicHistoryId)
+          }
+        }])
+        .toArray(function (err, result) {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 400,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          callback(result);
+          resolve(true);
+        });
+    });
+  };
+
+  this.deleteClinicHistoryInformation = function (clinicHistoryInformationId) {
+    return new Promise((resolve, reject) => {
+      const myQuery = { id: parseInt(clinicHistoryInformationId) };
+      connection.collection('clinicHistoryInformations')
+        .deleteOne(myQuery, (err, res) => {
+          if (err) {
+            console.error(`Error:  ${err}`);
+            const error = {
+              code: 500,
+              message: 'Internal Server Error.',
+            };
+            return reject(error);
+          }
+          resolve(res.deletedCount);
+          console.info('ClinicHistoryInformation in process of delete');
         });
     });
   };
