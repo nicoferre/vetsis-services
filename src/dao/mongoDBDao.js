@@ -325,7 +325,7 @@ function MongoDBDao() {
             resolve(true);
           });
       } else {
-        let query = { id: customerId };
+        let query = { id: parseInt(customerId) };
         connection.collection('customers')
           .find(query)
           .toArray(function (err, result) {
