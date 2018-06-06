@@ -991,10 +991,13 @@ definitions:
        $ref: '#/definitions/petIdBodyParam'
      date:
        $ref: '#/definitions/clinicHistoryDateBodyParam'
+     hour:
+       $ref: '#/definitions/hourBodyParam'
     required:
      - idCustomer
      - idPet
      - date
+     - hour
   NewRole:
     description: Body schema for new role post
     properties:
@@ -1171,6 +1174,11 @@ definitions:
       - cellPhone
       - street
       - location
+  hourBodyParam:
+    description: Hour turn
+    type: string
+    minLength: 1
+    example: "9:30"
   customerIdBodyParam:
     description: Customer id
     type: integer
