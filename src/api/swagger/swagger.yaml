@@ -1198,7 +1198,7 @@ definitions:
   NewTurn:
     description: Body schema for new role post
     properties:
-     idCustomer:
+     id:
        $ref: '#/definitions/customerIdBodyParam'
      idPet:
        $ref: '#/definitions/petIdBodyParam'
@@ -1207,7 +1207,6 @@ definitions:
      hour:
        $ref: '#/definitions/hourBodyParam'
     required:
-     - idCustomer
      - idPet
      - date
      - hour
