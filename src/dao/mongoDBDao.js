@@ -1412,25 +1412,7 @@ function MongoDBDao() {
     return new Promise((resolve, reject) => {
       if (!clinicHistoryId) {
         connection.collection('clinicHistories')
-          .aggregate([
-            {
-              $lookup:
-                {
-                  from: "pets",
-                  localField: "idPet",
-                  foreignField: "id",
-                  as: "pets"
-                }
-            },
-            {
-              $unwind: "$pets"
-            },
-            {
-              $project: {
-                "pets._id": 0
-              }
-            }
-          ])
+          .aggregate([{$lookup:{from: "pets",localField: "idPet",foreignField: "id",as: "pets"}},{$unwind: "$pets"},{$project: {"pets._id": 0}}])
           .toArray(function (err, result) {
             if (err) {
               console.error(`Error:  ${err}`);
@@ -1608,12 +1590,9 @@ function MongoDBDao() {
 
   this.showClinicHistoriesInformations = (clinicHistoryId, callback) => {
     return new Promise((resolve, reject) => {
+      const query = { idClinicHistory: parseInt(clinicHistoryId) };
       connection.collection('clinicHistoryInformations')
-        .aggregate([{ $lookup: { from: 'clinicHistories', localField: 'idClinicHistory', foreignField: 'id', as: 'details'}},{
-          $match:{
-            "id": parseInt(clinicHistoryId)
-          }
-        }])
+        .find(query)
         .toArray(function (err, result) {
           if (err) {
             console.error(`Error:  ${err}`);
