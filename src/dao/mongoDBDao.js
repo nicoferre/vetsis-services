@@ -1280,9 +1280,9 @@ function MongoDBDao() {
     return promiseFind;
   };
 
-  this.showVaccination = (vaccinationId, callback) => {
+  this.showVaccination = (petId, callback) => {
     return new Promise((resolve, reject) => {
-      if (!vaccinationId) {
+      if (!petId) {
         connection.collection('vaccinations')
           .aggregate([{ $lookup: { from: 'pets', localField: 'idPet', foreignField: 'id', as: 'details'}}])
           .toArray(function (err, result) {
@@ -1298,9 +1298,12 @@ function MongoDBDao() {
             resolve(true);
           });
       } else {
-        let query = { idSpecies: parseInt(vaccinationId) };
         connection.collection('vaccinations')
-          .find(query)
+          .aggregate([{$lookup:{from: "pets",localField: "idPet",foreignField: "id",as: "pet"}},{$unwind: "$pet"},{$project: {"pet._id": 0}},{
+            $match:{
+              "pet.id": parseInt(petId)
+            }
+          }])
           .toArray(function (err, result) {
             if (err) {
               console.error(`Error:  ${err}`);

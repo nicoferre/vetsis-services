@@ -8,8 +8,9 @@ const newVaccination = (vaccination) => {
   return new Promise(promise);
 };
 
-const showVaccination = (vaccinationId, callbackSuccess) => {
-  dao.showVaccination(vaccinationId, callbackSuccess);
+const showVaccination = (petId, callbackSuccess) => {
+  console.info(petId);
+  dao.showVaccination(petId, callbackSuccess);
 };
 
 const deleteVaccination = vaccinationId => dao.deleteVaccination(vaccinationId);

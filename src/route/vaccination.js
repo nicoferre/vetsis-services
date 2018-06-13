@@ -18,11 +18,12 @@ const newVaccination = (req, res) => {
 };
 
 const showVaccination = (req, res) => {
-  const vaccinationId = req.headers.vaccination_id;
+  const petId = req.headers.pet_id;
+  console.info(petId);
   let callbackSuccess = function callbackSuccess(species) {
     return res.send(species);
   };
-  vaccinationController.showVaccination(vaccinationId, callbackSuccess);
+  vaccinationController.showVaccination(petId, callbackSuccess);
 };
 
 const deleteVaccination = (req, res) => {
