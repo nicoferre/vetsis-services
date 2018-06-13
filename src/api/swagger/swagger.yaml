@@ -581,6 +581,7 @@ paths:
           - name: id
             in: header
             description: The id of the vaccination information to retrieve
+            required: true
             type: string
         responses:
           "200":

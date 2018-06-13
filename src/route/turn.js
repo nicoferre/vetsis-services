@@ -18,11 +18,10 @@ const newTurn = (req, res) => {
 };
 
 const showTurns = (req, res) => {
-  const turnId = req.headers.turn_id;
   let callbackSuccess = function callbackSuccess(turn) {
     return res.send(turn);
   };
-  turnController.showTurns(turnId, callbackSuccess);
+  turnController.showTurns(callbackSuccess);
 };
 
 const deleteTurn = (req, res) => {
