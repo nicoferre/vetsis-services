@@ -1426,47 +1426,11 @@ function MongoDBDao() {
           });
       } else {
         connection.collection('clinicHistories')
-          .aggregate([
-            {
-              $match:{
-                "id": parseInt(clinicHistoryId)
-              }
-            },
-            {
-              $lookup:
-                {
-                  from: "customers",
-                  localField: "idCustomer",
-                  foreignField: "id",
-                  as: "customer"
-                }
-            },
-            {
-              $unwind: "$customer"
-            },
-            {
-              $project: {
-                "customer._id": 0
-              }
-            },
-            {
-              $lookup:
-                {
-                  from: "pets",
-                  localField: "idPet",
-                  foreignField: "id",
-                  as: "pets"
-                }
-            },
-            {
-              $unwind: "$pets"
-            },
-            {
-              $project: {
-                "pets._id": 0
-              }
+          .aggregate([{$lookup:{from: "pets",localField: "idPet",foreignField: "id",as: "pets"}},{$unwind: "$pets"},{$project: {"pets._id": 0}},{
+            $match:{
+              "id": parseInt(clinicHistoryId)
             }
-          ])
+          }])
           .toArray(function (err, result) {
             if (err) {
               console.error(`Error:  ${err}`);

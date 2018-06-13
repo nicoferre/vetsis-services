@@ -152,7 +152,7 @@ paths:
             type: string
             required: true
        responses:
-         "200":
+         "204":
            description: Delete pet
          "400":
            description: Value is required but was not provide
@@ -225,7 +225,7 @@ paths:
             type: string
             required: true
        responses:
-         "200":
+         "204":
            description: Delete provider
          "400":
            description: Value is required but was not provide
@@ -300,7 +300,7 @@ paths:
             type: string
             required: true
        responses:
-         "200":
+         "204":
            description: Delete order
          "400":
            description: Value is required but was not provide
@@ -335,7 +335,7 @@ paths:
             type: string
             required: true
         responses:
-          "200":
+          "204":
             description: Delete clinic history
           "400":
             description: Value is required but was not provided
@@ -364,7 +364,7 @@ paths:
         tags:
           - Clinic History
         parameters:
-          - name: history_id
+          - name: id
             in: header
             description: The id of the pet to retrieve
             type: string
@@ -406,7 +406,7 @@ paths:
             type: string
             required: true
         responses:
-          "200":
+          "204":
             description: Delete clinic history information
           "400":
             description: Value is required but was not provided
@@ -477,7 +477,7 @@ paths:
             type: string
             required: true
         responses:
-          "200":
+          "204":
             description: Delete vaccination
           "400":
             description: Value is required but was not provided
@@ -549,7 +549,7 @@ paths:
             type: string
             required: true
         responses:
-          "200":
+          "204":
             description: Delete vaccination information
           "400":
             description: Value is required but was not provided
@@ -641,7 +641,7 @@ paths:
             type: string
             required: true
         responses:
-          "200":
+          "204":
             description: Delete user
           "400":
             description: Value is required but was not provided
@@ -692,7 +692,7 @@ paths:
             type: string
             required: true
         responses:
-          "200":
+          "204":
             description: Delete role
           "400":
             description: Value is required but was not provided
@@ -746,7 +746,7 @@ paths:
             type: string
             required: true
         responses:
-          "200":
+          "204":
             description: Delete turn
           "400":
             description: Value is required but was not provided
@@ -812,7 +812,7 @@ paths:
             type: string
             required: true
         responses:
-          "200":
+          "204":
             description: Delete breed
           "400":
             description: Value is required but was not provided
@@ -1032,7 +1032,7 @@ paths:
             type: string
             required: true
         responses:
-          "200":
+          "204":
             description: Delete species
           "400":
             description: Value is required but was not provided

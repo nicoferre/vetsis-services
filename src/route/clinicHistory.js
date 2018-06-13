@@ -18,7 +18,7 @@ const newClinicHistory = (req, res) => {
 };
 
 const showClinicHistories = (req, res) => {
-  const clinicHistoryId = req.headers.history_id;
+  const clinicHistoryId = req.headers.id;
   let callbackSuccess = function callbackSuccess(clinicHistories) {
     return res.send(clinicHistories);
   };

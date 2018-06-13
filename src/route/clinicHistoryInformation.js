@@ -22,7 +22,7 @@ const showClinicHistoriesInformations = (req, res) => {
   let callbackSuccess = function callbackSuccess(clinicHistoryInformation) {
     return res.send(clinicHistoryInformation);
   };
-  clinicHistoryInformationController.showClinicHistoriesInformations(clinicHistoryId, callbackSuccess);
+  clinicHistoryInformationController.getClinicHistoriesInformations(clinicHistoryId, callbackSuccess);
 };
 
 const deleteClinicHistoryInformation = (req, res) => {
@@ -55,7 +55,7 @@ const deleteClinicHistoryInformation = (req, res) => {
   };
 
   clinicHistoryInformationController
-    .deleteClinicHistoryInformation(clinicHistoryInformationId)
+    .deleteClinicHistoryInformation(clinicHistoryId)
     .then(success, error);
 };
 

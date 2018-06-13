@@ -8,7 +8,7 @@ const newClinicHistoryInformation = (clinicHistoryInformation) => {
   return new Promise(promise);
 };
 
-const showClinicHistoriesInformations = (clinicHistoryId, callbackSuccess) => {
+const getClinicHistoriesInformations = (clinicHistoryId, callbackSuccess) => {
   dao.showClinicHistoriesInformations(clinicHistoryId, callbackSuccess);
 };
 
@@ -24,7 +24,7 @@ const modifyClinicHistoryInformation = (clinicHistoryInformation) => {
 
 module.exports = {
   newClinicHistoryInformation,
-  showClinicHistoriesInformations,
+  getClinicHistoriesInformations,
   modifyClinicHistoryInformation,
   deleteClinicHistoryInformation,
 };
