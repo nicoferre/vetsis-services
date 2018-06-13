@@ -665,7 +665,6 @@ function MongoDBDao() {
       });
     } else {
       return new Promise((resolve, reject) => {
-        let query = { idCustomer: parseInt(customerId) };
         connection.collection('pets')
           .aggregate([
             {
@@ -685,7 +684,7 @@ function MongoDBDao() {
             },
             {
               $match:{
-                "customer.id": parseInt(customerId    )
+                "customer.id": parseInt(customerId)
               }
             }])
           .toArray(function (err, result) {
