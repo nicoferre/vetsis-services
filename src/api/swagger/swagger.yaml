@@ -1159,21 +1159,17 @@ definitions:
         $ref: '#/definitions/customerIdBodyParam'
       quantity:
         $ref: '#/definitions/customerIdBodyParam'
-      price_one:
-        $ref: '#/definitions/customerIdBodyParam'
-      price_two:
-        $ref: '#/definitions/customerIdBodyParam'
-      price_three:
-        $ref: '#/definitions/customerIdBodyParam'
-      price_four:
+      price:
         $ref: '#/definitions/customerIdBodyParam'
       minimum_quantity:
+        $ref: '#/definitions/customerIdBodyParam'
+      enabled:
         $ref: '#/definitions/customerIdBodyParam'
     required:
      - name
      - idCategory
      - quantity
-     - price_one
+     - price
      - minimum_quantity
   NewSpecies:
     description: Body schema for new species post
