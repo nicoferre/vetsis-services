@@ -1504,11 +1504,6 @@ definitions:
     type: string
     minLength: 1
     example: ""
-  clinicHistoryNextReviewBodyParam:
-    description: Clinic History next review
-    type: string
-    minLength: 1
-    example: "03/04/2018"
   vaccinationIdBodyParam:
     description: Customer id
     type: integer
@@ -1519,18 +1514,10 @@ definitions:
     type: integer
     minLength: 1
     example: 1
-  vaccinationsIdBodyParam:
-    type: integer
-    minLength: 1
-    example: 1
   vaccinationsNameBodyParam:
     type: string
     minLength: 1
     example: "Rabia"
-  vaccinationsQuantityBodyParam:
-    type: integer
-    minLength: 1
-    example: 1
   userEmailBodyParam:
     type: string
     minLength: 1

@@ -5,6 +5,5 @@ if(argv.config != ''){
 	config.configLocation = argv.config;
 }
 config.loadConfig();
-var dao = require('./dao/mongoDBDao');
 var server = require('./server');
 server.WebServer();

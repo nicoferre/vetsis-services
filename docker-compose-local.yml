@@ -1,0 +1,20 @@
+version: '3'
+services:
+  postgres:
+    restart: always
+    image: "postgres:10.4-alpine"
+    environment:
+      POSTGRES_DB: vetsis
+      POSTGRES_USER: vetsis
+      POSTGRES_PASSWORD: vetsis
+    ports:
+      - "5432:5432"
+  mongodb:
+    image: 'bitnami/mongodb:4.2.8'
+    environment:
+      - MONGODB_USERNAME=vetsis
+      - MONGODB_PASSWORD=vetsis
+      - MONGODB_DATABASE=vetsis
+      - MONGODB_PORT_NUMBER=27017
+    ports:
+      - "27017:27017"
