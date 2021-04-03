@@ -23,14 +23,14 @@
     "mongodb": "^3.5.5",
     "ms": "^2.1.1",
     "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
     "nyc": "^15.0.0",
     "object-assign": "^4.1.1",
     "once": "^1.4.0",
     "swagger-express-mw": "^0.7.0",
     "swagger-jsdoc": "^1.9.4",
     "winston": "^2.3.1",
-    "yargs": "^15.3.1",
-    "mysql2": "^2.1.0"
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
     "assert": "^1.4.1",
